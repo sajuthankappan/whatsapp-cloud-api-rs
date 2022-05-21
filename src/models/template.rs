@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 
 use super::component::Component;
 
+const DETERMINISTIC: &str = "deterministic";
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Template {
     pub name: String,
@@ -29,7 +31,7 @@ pub struct Language {
 impl Language {
     pub fn new(code: &str) -> Language {
         Self {
-            policy: "policy".to_string(),
+            policy: DETERMINISTIC.into(),
             code: code.into(),
         }
     }
