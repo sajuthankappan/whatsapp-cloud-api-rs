@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use super::component::Component;
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Template {
     pub name: String,
@@ -19,15 +21,16 @@ impl Template {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Component {}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Language {
+    pub policy: String,
     pub code: String,
 }
 
 impl Language {
     pub fn new(code: &str) -> Language {
-        Self { code: code.into() }
+        Self {
+            policy: "policy".to_string(),
+            code: code.into(),
+        }
     }
 }
