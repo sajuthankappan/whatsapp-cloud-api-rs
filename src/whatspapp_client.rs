@@ -4,11 +4,11 @@ use crate::{models::Message, WhatsappError};
 
 const WHATSAPP_API_URL: &str = "https://graph.facebook.com/v13.0/105940028793862/messages";
 
-pub struct WhatsppClient {
+pub struct WhatasppClient {
     access_token: String,
 }
 
-impl WhatsppClient {
+impl WhatasppClient {
     pub fn new(access_token: &str) -> Self {
         Self {
             access_token: access_token.into(),

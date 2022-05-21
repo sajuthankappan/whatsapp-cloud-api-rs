@@ -1,6 +1,6 @@
 use whatsapp_cloud_api::{
     models::{Message, Template, Text},
-    WhatsappError, WhatsppClient,
+    WhatsappError, WhatasppClient,
 };
 
 #[tokio::test]
@@ -12,7 +12,7 @@ async fn send_text_message_works() -> Result<(), WhatsappError> {
         std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
     let text = Text::new("test message");
     let message = Message::from_text(&to, text);
-    let client = WhatsppClient::new(&access_token);
+    let client = WhatasppClient::new(&access_token);
     client.send_message(&message).await?;
     Ok(())
 }
@@ -28,7 +28,7 @@ async fn send_message_template_works() -> Result<(), WhatsappError> {
     let language = "en_US";
     let template = Template::new(template_name, language);
     let message = Message::from_template(&to, template);
-    let client = WhatsppClient::new(&access_token);
+    let client = WhatasppClient::new(&access_token);
     client.send_message(&message).await?;
     Ok(())
 }
