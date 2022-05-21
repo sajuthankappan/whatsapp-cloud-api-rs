@@ -1,4 +1,4 @@
-# whatsapp-cloud-api-rs &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs]
+# whatsapp-cloud-api &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs]
 [Latest Version]: https://img.shields.io/crates/v/whatsapp-cloud-api.svg
 [crates.io]: https://crates.io/crates/whatsapp-cloud-api
 [Docs]: https://docs.rs/whatsapp-cloud-api/badge.svg
