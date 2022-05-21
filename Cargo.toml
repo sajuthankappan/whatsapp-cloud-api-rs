@@ -8,13 +8,12 @@ edition = "2021"
 [dependencies]
 log = "0.4.14"
 reqwest = { version = "0.11.4", features = ["json"]}
+serde = { version = "1.0.127", features = ["derive"]}
 serde_json = "1.0.66"
-serde = "1.0.127"
 
 
 [dev-dependencies]
 anyhow = "1.0.43"
 dotenv = "0.15.0"
 env_logger = "0.9.0"
-serde = { version = "1.0.127", features = ["derive"]}
 tokio = { version = "1.10.0", features=["full"]}
