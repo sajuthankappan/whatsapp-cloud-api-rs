@@ -1,6 +1,10 @@
-# whatsapp-cloud-api-rs
+# whatsapp-cloud-api-rs &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs]
+[Latest Version]: https://img.shields.io/crates/v/whatsapp-cloud-api.svg
+[crates.io]: https://crates.io/crates/whatsapp-cloud-api
+[Docs]: https://docs.rs/whatsapp-cloud-api/badge.svg
+[docs.rs]: https://docs.rs/whatsapp-cloud-api
 
-Whatsapp Cloud API Rust Client 
+**RWhatsapp Cloud API Rust Client**
 
 ## Usage example
 
@@ -16,6 +20,5 @@ let access_token = "<access_token>";
 ```
 
 For more examples, please see the [tests] folder
-
 
 [tests]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/tree/master/tests
