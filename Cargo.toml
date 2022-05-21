@@ -2,8 +2,13 @@
 name = "whatspp-cloud-api-rs"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT OR Apache-2.0"
+description = "Whatsapp Cloud API Rust Client"
+homepage = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
+repository = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
+readme = "README.md"
+keywords = ["whatsapp"]
+categories = ["api-bindings"]
 
 [dependencies]
 log = "0.4.14"
