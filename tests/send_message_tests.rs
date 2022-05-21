@@ -1,4 +1,4 @@
-use whatspp_cloud_api_rs::{
+use whatspp_cloud_api::{
     models::{Message, Template, Text},
     WhatsappError, WhatsppClient,
 };
