@@ -1,0 +1,20 @@
+[package]
+name = "whatspp-cloud-api-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+log = "0.4.14"
+reqwest = { version = "0.11.4", features = ["json"]}
+serde_json = "1.0.66"
+serde = "1.0.127"
+
+
+[dev-dependencies]
+anyhow = "1.0.43"
+dotenv = "0.15.0"
+env_logger = "0.9.0"
+serde = { version = "1.0.127", features = ["derive"]}
+tokio = { version = "1.10.0", features=["full"]}
