@@ -8,15 +8,27 @@
 
 ## Usage example
 
+Send templatge based text message
+
 ```rust
 let access_token = "<access_token>";
-    let to = "<to>";
-    let template_name = "hello_world";
-    let language = "en_US";
-    let template = Template::new(template_name, language);
-    let message = Message::from_template(&to, template);
-    let client = WhatsppClient::new(&access_token);
-    client.send_message(&message).await?;
+let to = "<to>";
+let template_name = "hello_world";
+let language = "en_US";
+let template = Template::new(template_name, language);
+let message = Message::from_template(&to, template);
+let client = WhatsppClient::new(&access_token);
+client.send_message(&message).await?;
+```
+
+Send text message (Note: This requires an user initial conversation)
+```rust
+let access_token = "<access_token>";
+let to = "<to>";
+let text = Text::new("test message");
+let message = Message::from_text(&to, text);
+let client = WhatasppClient::new(&access_token);
+client.send_message(&message).await?;
 ```
 
 For more examples, please see the [tests] folder
