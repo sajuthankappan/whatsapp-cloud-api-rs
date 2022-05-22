@@ -21,7 +21,21 @@ let client = WhatsppClient::new(&access_token);
 client.send_message(&message).await?;
 ```
 
+Send templatge based text message with parameters
+
+```rust
+let template_name = "sample_shipping_confirmation";
+let language = "en_US";
+let parameters = Vec::from([Parameter::from_text("3")]);
+let components = Vec::from([Component::with_parameters("body", parameters)]);
+let template = Template::with_components(template_name, language, components);
+let message = Message::from_template(&to, template);
+let client = WhatasppClient::new(&access_token);
+let response = client.send_message(&message).await?;
+```
+
 Send text message (Note: This requires an user initial conversation)
+
 ```rust
 let access_token = "<access_token>";
 let to = "<to>";
@@ -31,6 +45,7 @@ let client = WhatasppClient::new(&access_token);
 client.send_message(&message).await?;
 ```
 
-For more examples, please see the [tests] folder
+
+For more details, please see the [tests] folder
 
 [tests]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/tree/master/tests

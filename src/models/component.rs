@@ -5,15 +5,23 @@ pub struct Component {
     #[serde(rename = "type")]
     pub component_type: String,
     pub sub_type: Option<String>,
-    pub parameters: Option<String>,
+    pub parameters: Option<Vec<Parameter>>,
 }
 
 impl Component {
     pub fn new(component_type: &str) -> Self {
-        Component {
+        Self {
             component_type: component_type.into(),
             sub_type: None,
             parameters: None,
+        }
+    }
+
+    pub fn with_parameters(component_type: &str, parameters: Vec<Parameter>) -> Self {
+        Self {
+            component_type: component_type.into(),
+            sub_type: None,
+            parameters: Some(parameters),
         }
     }
 }
@@ -30,6 +38,19 @@ pub struct Parameter {
     pub video: Option<Media>,
 }
 
+impl Parameter {
+    pub fn from_text(text: &str) -> Self {
+        Self {
+            parameter_type: "text".into(),
+            text: Some(text.into()),
+            currency: None,
+            date_time: None,
+            image: None,
+            document: None,
+            video: None,
+        }
+    }
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Currency {
     pub fallback_value: String,

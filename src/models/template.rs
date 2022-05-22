@@ -20,6 +20,15 @@ impl Template {
             components: None,
         }
     }
+
+    pub fn with_components(name: &str, language: &str, components: Vec<Component>) -> Self {
+        let language = Language::new(language);
+        Self {
+            name: name.into(),
+            language,
+            components: Some(components),
+        }
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
