@@ -1,6 +1,7 @@
-use serde_json::Value;
-
-use crate::{models::Message, WhatsappError};
+use crate::{
+    models::{Message, MessageResponse},
+    WhatsappError,
+};
 
 const WHATSAPP_API_URL: &str = "https://graph.facebook.com/v13.0/105940028793862/messages";
 
@@ -15,7 +16,7 @@ impl WhatasppClient {
         }
     }
 
-    pub async fn send_message(&self, message: &Message) -> Result<Value, WhatsappError> {
+    pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {
         http_client::post(WHATSAPP_API_URL, &self.access_token, message).await
     }
 }
