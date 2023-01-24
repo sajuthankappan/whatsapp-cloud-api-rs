@@ -4,7 +4,7 @@
 [Docs]: https://docs.rs/whatsapp-cloud-api/badge.svg
 [docs.rs]: https://docs.rs/whatsapp-cloud-api
 
-**RWhatsapp Cloud API Rust Client**
+**Whatsapp Cloud API Rust Client**
 
 ## Usage example
 
