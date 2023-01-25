@@ -8,7 +8,7 @@
 
 ## Usage example
 
-Send templatge based text message
+Send template based text message
 
 ```rust
 let access_token = "<access_token>";
@@ -22,7 +22,7 @@ let client = WhatsppClient::new(&access_token, &phone_number_id);
 client.send_message(&message).await?;
 ```
 
-Send templatge based text message with parameters
+Send template based text message with parameters
 
 ```rust
 let access_token = "<access_token>";
