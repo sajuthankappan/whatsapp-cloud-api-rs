@@ -22,7 +22,7 @@ impl WhatasppClient {
 
     fn whatsapp_api_url(&self) -> String {
         format!(
-            "https://graph.facebook.com/v15.0/{}/messages",
+            "https://graph.facebook.com/v17.0/{}/messages",
             self.phone_number_id
         )
     }
