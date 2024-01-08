@@ -42,7 +42,7 @@ mod http_client {
         let client = reqwest::Client::new();
         let resp = client
             .post(url)
-            .bearer_auth(&bearer_token)
+            .bearer_auth(bearer_token)
             .json(&data)
             .send()
             .await?;

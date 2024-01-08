@@ -1,64 +1,48 @@
 use serde::{Deserialize, Serialize};
 
-use super::Template;
+use super::{
+    template_message::{Template, TemplateMessage},
+    text_message::{Text, TextMessage},
+};
 
-const WHATSAPP: &str = "whatsapp";
-const TEXT: &str = "text";
-const TEMPLATE: &str = "template";
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Message {
-    pub to: String,
-    pub messaging_product: String,
-    pub recipient_type: Option<String>,
-    #[serde(rename = "type")]
-    pub message_type: String,
-    pub text: Option<Text>,
-    pub template: Option<Template>,
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
+pub enum Message {
+    Text(TextMessage),
+    Template(TemplateMessage),
 }
 
 impl Message {
     pub fn from_text(to: &str, text: Text) -> Self {
-        Self {
-            to: to.into(),
-            messaging_product: WHATSAPP.into(),
-            recipient_type: None,
-            message_type: TEXT.into(),
-            text: Some(text),
-            template: None,
-        }
+        let text_message = TextMessage::new(to, text, None);
+        Self::Text(text_message)
+    }
+
+    pub fn from_text_with_context(to: &str, text: Text, context: Context) -> Self {
+        let text_message = TextMessage::new(to, text, Some(context));
+        Self::Text(text_message)
     }
 
     pub fn from_template(to: &str, template: Template) -> Self {
-        Self {
-            messaging_product: WHATSAPP.into(),
-            recipient_type: None,
-            message_type: TEMPLATE.into(),
-            to: to.into(),
-            text: None,
-            template: Some(template),
-        }
+        let template_message = TemplateMessage::new(to, template, None);
+        Self::Template(template_message)
+    }
+
+    pub fn from_template_with_context(to: &str, template: Template, context: Context) -> Self {
+        let template_message = TemplateMessage::new(to, template, Some(context));
+        Self::Template(template_message)
     }
 }
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Text {
-    pub body: String,
-    pub preview_url: Option<bool>,
+pub struct Context {
+    pub message_id: String,
 }
 
-impl Text {
-    pub fn new(body: &str) -> Text {
+impl Context {
+    pub fn new(message_id: &str) -> Self {
         Self {
-            body: body.into(),
-            preview_url: None,
-        }
-    }
-
-    pub fn with_preview_url(body: &str, preview_url: bool) -> Self {
-        Self {
-            body: body.into(),
-            preview_url: Some(preview_url),
+            message_id: message_id.into(),
         }
     }
 }
