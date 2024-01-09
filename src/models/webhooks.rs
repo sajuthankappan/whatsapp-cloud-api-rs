@@ -32,22 +32,155 @@ pub struct Metadata {
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
-#[serde(tag = "type")]
-#[serde(rename_all = "snake_case")]
-pub enum NotificationMessage {
-    Audio,
-    Image,
-    Text(TextMessage),
+pub struct NotificationMessage {
+    pub from: String,
+    pub id: String,
+    pub context: Option<Context>,
+    pub errors: Option<Vec<Error>>,
+    pub timestamp: String,
+
+    #[serde(rename = "type")]
+    pub message_type: NotificationMessageType,
+    pub audio: Option<Audio>,
+    pub button: Option<Button>,
+    pub document: Option<Document>,
+    pub text: Option<Text>,
+    pub image: Option<Image>,
+    pub interactive: Option<Interactive>,
+    pub order: Option<Order>,
+    pub sticker: Option<Sticker>,
+    pub system: Option<System>,
+    pub video: Option<Video>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct TextMessage {
-    pub from: String,
+pub struct Context {
+    forwarded: Option<bool>,
+    frequently_forwarded: Option<bool>,
+    from: String,
+    id: String,
+    referred_product: Option<ReferredProduct>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ReferredProduct {
+    catalog_id: String,
+    product_retailer_id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Error {
+    code: i32,
+    title: String,
+    // TODO: Add more fields from v16.0 and newer
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum NotificationMessageType {
+    Audio,
+    Button,
+    Document,
+    Text,
+    Image,
+    Interactive,
+    Order,
+    Sticker,
+    System,
+    Unknown,
+    Video,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Audio {
     pub id: String,
-    pub text: Text,
+    pub meme_type: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Button {
+    pub payload: String,
+    pub text: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Document {
+    pub caption: Option<String>,
+    pub filename: String,
+    pub sha256: String,
+    pub meme_type: String,
+    pub id: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Image {
+    pub caption: Option<String>,
+    pub sha256: String,
+    pub id: String,
+    pub meme_type: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Interactive {
+    pub button_reply: Option<ButtonReply>,
+    pub list_reply: Option<ListReply>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ButtonReply {
+    pub id: String,
+    pub title: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ListReply {
+    pub id: String,
+    pub title: String,
+    pub description: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Order {
+    pub catalog_id: String,
+    pub product_items: Vec<ProductItem>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ProductItem {
+    pub product_retailer_id: String,
+    pub quantity: String,
+    pub item_price: String,
+    pub currency: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Sticker {
+    pub meme_type: String,
+    pub sha256: String,
+    pub id: String,
+    pub animated: Option<bool>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct System {
+    pub body: String,
+    pub identity: String,
+    pub new_wa_id: Option<String>,
+    pub wa_id: Option<String>,
+    pub system_type: String,
+    pub customer: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Text {
     pub body: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Video {
+    pub caption: Option<String>,
+    pub filename: String,
+    pub sha256: String,
+    pub id: String,
+    pub meme_type: String,
 }

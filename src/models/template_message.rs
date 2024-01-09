@@ -1,31 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-use crate::WHATSAPP;
-
-use super::{component::Component, Context};
+use super::component::Component;
 
 const DETERMINISTIC: &str = "deterministic";
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct TemplateMessage {
-    to: String,
-    messaging_product: String,
-    recipient_type: Option<String>,
-    template: Template,
-    context: Option<Context>,
-}
-
-impl TemplateMessage {
-    pub fn new(to: &str, template: Template, context: Option<Context>) -> Self {
-        Self {
-            to: to.into(),
-            messaging_product: WHATSAPP.into(),
-            recipient_type: None,
-            template,
-            context,
-        }
-    }
-}
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Template {

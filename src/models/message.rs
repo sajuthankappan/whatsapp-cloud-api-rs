@@ -1,39 +1,55 @@
 use serde::{Deserialize, Serialize};
 
-use super::{
-    template_message::{Template, TemplateMessage},
-    text_message::{Text, TextMessage},
-};
+use crate::WHATSAPP;
+
+use super::{template_message::Template, text_message::Text};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
-#[serde(tag = "type")]
+pub struct Message {
+    to: String,
+    messaging_product: String,
+    recipient_type: Option<String>,
+    context: Option<Context>,
+
+    #[serde(rename = "type")]
+    message_type: MessageType,
+    text: Option<Text>,
+    template: Option<Template>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
-pub enum Message {
-    Text(TextMessage),
-    Template(TemplateMessage),
+pub enum MessageType {
+    Text,
+    Template,
 }
 
 impl Message {
-    pub fn from_text(to: &str, text: Text) -> Self {
-        let text_message = TextMessage::new(to, text, None);
-        Self::Text(text_message)
+    pub fn from_text(to: &str, text: Text, context: Option<Context>) -> Self {
+        Self {
+            to: to.into(),
+            messaging_product: WHATSAPP.into(),
+            recipient_type: None,
+            context,
+            message_type: MessageType::Text,
+            text: Some(text),
+            template: None,
+        }
     }
 
-    pub fn from_text_with_context(to: &str, text: Text, context: Context) -> Self {
-        let text_message = TextMessage::new(to, text, Some(context));
-        Self::Text(text_message)
-    }
-
-    pub fn from_template(to: &str, template: Template) -> Self {
-        let template_message = TemplateMessage::new(to, template, None);
-        Self::Template(template_message)
-    }
-
-    pub fn from_template_with_context(to: &str, template: Template, context: Context) -> Self {
-        let template_message = TemplateMessage::new(to, template, Some(context));
-        Self::Template(template_message)
+    pub fn from_template(to: &str, template: Template, context: Option<Context>) -> Self {
+        Self {
+            to: to.into(),
+            messaging_product: WHATSAPP.into(),
+            recipient_type: None,
+            context,
+            message_type: MessageType::Template,
+            text: None,
+            template: Some(template),
+        }
     }
 }
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Context {
     pub message_id: String,

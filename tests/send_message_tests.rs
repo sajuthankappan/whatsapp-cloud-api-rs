@@ -13,7 +13,7 @@ async fn send_text_message_works() -> Result<(), WhatsappError> {
     let to =
         std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
     let text = Text::new("test message");
-    let message = Message::from_text(&to, text);
+    let message = Message::from_text(&to, text, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
@@ -32,7 +32,7 @@ async fn send_message_template_works() -> Result<(), WhatsappError> {
     let template_name = "hello_world";
     let language = "en_US";
     let template = Template::new(template_name, language);
-    let message = Message::from_template(&to, template);
+    let message = Message::from_template(&to, template, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
@@ -53,7 +53,7 @@ async fn send_message_template_with_components_works() -> Result<(), WhatsappErr
     let parameters = Vec::from([Parameter::from_text("3")]);
     let components = Vec::from([Component::with_parameters("body", parameters)]);
     let template = Template::with_components(template_name, language, components);
-    let message = Message::from_template(&to, template);
+    let message = Message::from_template(&to, template, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);

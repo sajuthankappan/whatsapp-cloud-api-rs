@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Added
+
+-  Additional model structs to help processing incoming webhooks
+
+
+### Changed
+
+- **Breaking:** Message is now back as struct :)
+- **Breaking:** Message::from_text() and Message::from_template() have an additional parameter context, for replying to messages. For normal messages, pass it as None.
+
 
 ## [0.4.0] - 2024-08-01
 
