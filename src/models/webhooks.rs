@@ -20,9 +20,21 @@ pub struct Change {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Value {
+    pub contacts: Vec<Contact>,
     pub messaging_product: String,
     pub metadata: Metadata,
     pub messages: Vec<NotificationMessage>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Contact {
+    pub wa_id: String,
+    pub profile: Profile,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Profile {
+    pub name: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -117,7 +129,7 @@ pub struct Image {
     pub caption: Option<String>,
     pub sha256: String,
     pub id: String,
-    pub meme_type: String,
+    pub meme_type: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]

@@ -4,7 +4,8 @@
 
 ### Added
 
--  Additional model structs to help processing incoming webhooks
+- Additional model structs to help processing incoming webhooks
+- Contact profile to incoming webhook messages
 
 
 ### Changed
