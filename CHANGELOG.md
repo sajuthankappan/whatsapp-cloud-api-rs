@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.4.1] - 2024-09-01
+
 ### Added
 
 - Additional model structs to help processing incoming webhooks
