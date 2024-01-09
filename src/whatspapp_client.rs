@@ -1,7 +1,9 @@
 use crate::{
-    models::{Message, MessageResponse},
+    models::{MediaResponse, Message, MessageResponse},
     WhatsappError,
 };
+
+const FACEBOOK_GRAPH_API_BASE_URL: &str = "https://graph.facebook.com/v17.0";
 
 pub struct WhatasppClient {
     access_token: String,
@@ -17,14 +19,22 @@ impl WhatasppClient {
     }
 
     pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {
-        http_client::post(&self.whatsapp_api_url(), &self.access_token, message).await
+        http_client::post(&self.messages_api_url(), &self.access_token, message).await
     }
 
-    fn whatsapp_api_url(&self) -> String {
+    pub async fn get_media(&self, media_id: &str) -> Result<MediaResponse, WhatsappError> {
+        http_client::get(&self.media_api_url(media_id), &self.access_token).await
+    }
+
+    fn messages_api_url(&self) -> String {
         format!(
-            "https://graph.facebook.com/v17.0/{}/messages",
+            "{FACEBOOK_GRAPH_API_BASE_URL}/{}/messages",
             self.phone_number_id
         )
+    }
+
+    fn media_api_url(&self, media_id: &str) -> String {
+        format!("{FACEBOOK_GRAPH_API_BASE_URL}/{media_id}")
     }
 }
 
@@ -33,6 +43,27 @@ mod http_client {
     use serde::{de::DeserializeOwned, Serialize};
 
     use crate::WhatsappError;
+
+    pub async fn get<U>(url: &str, bearer_token: &str) -> Result<U, WhatsappError>
+    where
+        U: DeserializeOwned,
+    {
+        let client = reqwest::Client::new();
+        let resp = client.get(url).bearer_auth(bearer_token).send().await?;
+
+        match resp.status() {
+            StatusCode::OK => {
+                let json = resp.json::<U>().await?;
+                Ok(json)
+            }
+            _ => {
+                log::warn!("{:?}", &resp);
+                let error_text = &resp.text().await?;
+                log::warn!("{:?}", &error_text);
+                Err(WhatsappError::UnexpectedError(error_text.to_string()))
+            }
+        }
+    }
 
     pub async fn post<T, U>(url: &str, bearer_token: &str, data: &T) -> Result<U, WhatsappError>
     where

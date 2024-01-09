@@ -9,6 +9,7 @@
 ## Features
 
 - Sending messages using Whatspp Cloud API
+- Get / Upload media
 - Models to help processing incoming webhooks
 
 ## Usage example
