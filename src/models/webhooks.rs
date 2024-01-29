@@ -202,10 +202,10 @@ pub struct Video {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Status {
     pub biz_opaque_callback_data: Option<String>,
-    pub conversation: Conversation,
+    pub conversation: Option<Conversation>,
     pub errors: Option<Vec<Error>>,
     pub id: String,
-    pub pricing: Pricing,
+    pub pricing: Option<Pricing>,
     pub recipient_id: String,
     pub status: String,
     pub timestamp: String,

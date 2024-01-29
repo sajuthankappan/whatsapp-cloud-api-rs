@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.4.3] - 2024-01-29
+
+### Changed
+
+- **Breaking:** conversation and pricing in Status are now optional
+
 
 ## [0.4.2] - 2024-01-29
 
