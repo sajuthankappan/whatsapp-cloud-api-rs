@@ -20,10 +20,12 @@ pub struct Change {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Value {
-    pub contacts: Vec<Contact>,
+    pub contacts: Option<Vec<Contact>>,
+    pub errors: Option<Vec<Error>>,
     pub messaging_product: String,
     pub metadata: Metadata,
-    pub messages: Vec<NotificationMessage>,
+    pub messages: Option<Vec<NotificationMessage>>,
+    pub statuses: Option<Vec<Status>>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -195,4 +197,35 @@ pub struct Video {
     pub sha256: String,
     pub id: String,
     pub meme_type: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Status {
+    pub biz_opaque_callback_data: Option<String>,
+    pub conversation: Conversation,
+    pub errors: Option<Vec<Error>>,
+    pub id: String,
+    pub pricing: Pricing,
+    pub recipient_id: String,
+    pub status: String,
+    pub timestamp: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Conversation {
+    id: String,
+    origin: Origin,
+    // TODO: Other fields
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Origin {
+    #[serde(rename = "type")]
+    pub origin_type: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Pricing {
+    pub pricing_model: String,
+    // TODO: Other fields
 }

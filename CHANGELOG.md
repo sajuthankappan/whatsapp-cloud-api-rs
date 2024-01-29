@@ -2,7 +2,19 @@
 
 ## [Unreleased]
 
-## [0.4.1] - 2024-09-01
+
+## [0.4.2] - 2024-01-29
+
+### Added
+
+- Additional model structs to help processing incoming webhooks
+
+### Changed
+
+- **Breaking:** contacts and messages in Value are now optional
+
+
+## [0.4.1] - 2024-01-09
 
 ### Added
 
@@ -16,7 +28,7 @@
 - **Breaking:** Message::from_text() and Message::from_template() have an additional parameter context, for replying to messages. For normal messages, pass it as None.
 
 
-## [0.4.0] - 2024-08-01
+## [0.4.0] - 2024-01-08
 
 ### Added
 
