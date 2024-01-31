@@ -10,6 +10,7 @@ pub struct MessageResponse {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct CreatedMessage {
     pub id: String,
+    pub message_status: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

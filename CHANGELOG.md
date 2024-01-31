@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Add message_status to CreatedMessage struct
+
+
 ## [0.4.3] - 2024-01-29
 
 ### Changed
