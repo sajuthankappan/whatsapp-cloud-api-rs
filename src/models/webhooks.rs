@@ -207,8 +207,16 @@ pub struct Status {
     pub id: String,
     pub pricing: Option<Pricing>,
     pub recipient_id: String,
-    pub status: String,
+    pub status: StatusCode,
     pub timestamp: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum StatusCode {
+    Delivered,
+    Read,
+    Sent,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]

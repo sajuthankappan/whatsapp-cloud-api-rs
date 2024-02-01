@@ -2,9 +2,13 @@
 
 ## [Unreleased]
 
+
+## [0.4.4] - 2024-02-01
+
 ### Changed
 
 - Add message_status to CreatedMessage struct
+- status string (delieverd, read, sent) is now an enum
 
 
 ## [0.4.3] - 2024-01-29
