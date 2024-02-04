@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.4.5] - 2024-02-04
+
+### Changed
+
+- Make message_status optional in CreatedMessage struct
+
 
 ## [0.4.4] - 2024-02-01
 
