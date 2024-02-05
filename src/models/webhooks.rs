@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use super::message::StatusCode;
+
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct NotificationPayload {
     pub object: String,
@@ -209,14 +211,6 @@ pub struct Status {
     pub recipient_id: String,
     pub status: StatusCode,
     pub timestamp: String,
-}
-
-#[derive(Deserialize, Serialize, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
-pub enum StatusCode {
-    Delivered,
-    Read,
-    Sent,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]

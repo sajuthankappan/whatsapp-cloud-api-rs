@@ -8,6 +8,12 @@ pub struct MessageResponse {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MessageStatusResponse {
+    pub success: Option<bool>,
+    // TODO: error and otehr attributes
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct CreatedMessage {
     pub id: String,
     pub message_status: Option<String>,

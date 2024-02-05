@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.4.6] - 2024-02-04
+
+### Added
+
+- add mark_message_as_read method for WhatsappClient
+
+
 ## [0.4.5] - 2024-02-04
 
 ### Changed

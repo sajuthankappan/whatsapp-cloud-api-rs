@@ -1,5 +1,5 @@
 use crate::{
-    models::{MediaResponse, Message, MessageResponse},
+    models::{MediaResponse, Message, MessageResponse, MessageStatus, MessageStatusResponse},
     WhatsappError,
 };
 
@@ -20,6 +20,19 @@ impl WhatasppClient {
 
     pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {
         http_client::post(&self.messages_api_url(), &self.access_token, message).await
+    }
+
+    pub async fn mark_message_as_read(
+        &self,
+        message_id: &str,
+    ) -> Result<MessageStatusResponse, WhatsappError> {
+        let message_status = MessageStatus::for_read(message_id);
+        http_client::post(
+            &self.messages_api_url(),
+            &self.access_token,
+            &message_status,
+        )
+        .await
     }
 
     pub async fn get_media(&self, media_id: &str) -> Result<MediaResponse, WhatsappError> {
