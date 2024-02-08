@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.4.7] - 2024-02-08
+
+### Added
+
+- add failed status to StatusCode
+
+
 ## [0.4.6] - 2024-02-04
 
 ### Added

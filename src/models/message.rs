@@ -75,6 +75,7 @@ pub enum StatusCode {
     Delivered,
     Read,
     Sent,
+    Failed,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
