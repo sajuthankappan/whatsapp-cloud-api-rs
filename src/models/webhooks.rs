@@ -80,14 +80,14 @@ pub struct Context {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct ReferredProduct {
-    catalog_id: String,
-    product_retailer_id: String,
+    pub catalog_id: String,
+    pub product_retailer_id: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Error {
-    code: i32,
-    title: String,
+    pub code: i32,
+    pub title: String,
     // TODO: Add more fields from v16.0 and newer
 }
 
@@ -215,8 +215,8 @@ pub struct Status {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Conversation {
-    id: String,
-    origin: Origin,
+    pub id: String,
+    pub origin: Origin,
     // TODO: Other fields
 }
 

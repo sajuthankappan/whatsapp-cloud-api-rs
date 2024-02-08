@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.4.8] - 2024-02-08
+
+### Changed
+
+- Changed a few model fields to public
+
+
 ## [0.4.7] - 2024-02-08
 
 ### Added
