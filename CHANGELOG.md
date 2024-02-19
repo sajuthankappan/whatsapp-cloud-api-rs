@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+
+## [0.5.0] - 2024-02-19
+
+### Added
+
+- index attribute for Component, specifically meant for buttons
+- for_button function for Component
+
+### Changed
+
+- **Breaking:** component_type and sub_types of Component are now enums
+- **Breaking:** parameter_type of Paramter is now enum
+
 ## [0.4.9] - 2024-02-19
 
 ### Changed

@@ -7,7 +7,9 @@ mod text_message;
 
 pub mod webhooks;
 
-pub use component::{Component, Currency, DateTime, Media, Parameter};
+pub use component::{
+    Component, ComponentSubType, ComponentType, Currency, DateTime, Media, Parameter, ParameterType,
+};
 pub use media_response::MediaResponse;
 pub use message::{Context, Message, MessageStatus, StatusCode};
 pub use message_response::{

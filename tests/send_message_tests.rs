@@ -1,5 +1,5 @@
 use whatsapp_cloud_api::{
-    models::{Component, Message, Parameter, Template, Text},
+    models::{Component, ComponentType, Message, Parameter, Template, Text},
     WhatasppClient, WhatsappError,
 };
 
@@ -51,7 +51,7 @@ async fn send_message_template_with_components_works() -> Result<(), WhatsappErr
     let template_name = "sample_shipping_confirmation";
     let language = "en_US";
     let parameters = Vec::from([Parameter::from_text("3")]);
-    let components = Vec::from([Component::with_parameters("body", parameters)]);
+    let components = Vec::from([Component::with_parameters(ComponentType::Body, parameters)]);
     let template = Template::with_components(template_name, language, components);
     let message = Message::from_template(&to, template, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
