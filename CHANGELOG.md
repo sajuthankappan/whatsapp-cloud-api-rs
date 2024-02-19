@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.4.9] - 2024-02-19
+
+### Changed
+
+- Fix typo: mime_type instead of meme_type :) 
+
+
 ## [0.4.8] - 2024-02-08
 
 ### Changed
