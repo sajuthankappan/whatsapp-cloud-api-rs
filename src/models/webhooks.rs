@@ -71,11 +71,11 @@ pub struct NotificationMessage {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Context {
-    forwarded: Option<bool>,
-    frequently_forwarded: Option<bool>,
-    from: String,
-    id: String,
-    referred_product: Option<ReferredProduct>,
+    pub forwarded: Option<bool>,
+    pub frequently_forwarded: Option<bool>,
+    pub from: String,
+    pub id: String,
+    pub referred_product: Option<ReferredProduct>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -105,6 +105,7 @@ pub enum NotificationMessageType {
     System,
     Unknown,
     Video,
+    Unsupported,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -152,7 +153,7 @@ pub struct ButtonReply {
 pub struct ListReply {
     pub id: String,
     pub title: String,
-    pub description: String,
+    pub description: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]

@@ -2,21 +2,23 @@ use serde::{Deserialize, Serialize};
 
 use crate::WHATSAPP;
 
-use super::{template_message::Template, text_message::Text};
+use super::{interactive_message::Interactive, template_message::Template, text_message::Text};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Message {
     biz_opaque_callback_data: Option<String>,
     context: Option<Context>,
+    interactive: Option<Interactive>,
     messaging_product: String,
     recipient_type: Option<String>,
     status: Option<StatusCode>,
 
-    #[serde(rename = "type")]
-    message_type: Option<MessageType>,
     template: Option<Template>,
     text: Option<Text>,
     to: String,
+
+    #[serde(rename = "type")]
+    message_type: Option<MessageType>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -24,6 +26,7 @@ pub struct Message {
 pub enum MessageType {
     Text,
     Template,
+    Interactive,
 }
 
 impl Message {
@@ -31,6 +34,7 @@ impl Message {
         Self {
             biz_opaque_callback_data: None,
             context,
+            interactive: None,
             messaging_product: WHATSAPP.into(),
             recipient_type: None,
             status: None,
@@ -45,11 +49,27 @@ impl Message {
         Self {
             biz_opaque_callback_data: None,
             context,
+            interactive: None,
             messaging_product: WHATSAPP.into(),
             recipient_type: None,
             status: None,
             message_type: Some(MessageType::Template),
             template: Some(template),
+            text: None,
+            to: to.into(),
+        }
+    }
+
+    pub fn from_interactive(to: &str, interactive: Interactive, context: Option<Context>) -> Self {
+        Self {
+            biz_opaque_callback_data: None,
+            context,
+            interactive: Some(interactive),
+            messaging_product: WHATSAPP.into(),
+            recipient_type: None,
+            status: None,
+            message_type: Some(MessageType::Interactive),
+            template: None,
             text: None,
             to: to.into(),
         }

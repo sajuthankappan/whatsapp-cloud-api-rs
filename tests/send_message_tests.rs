@@ -1,5 +1,8 @@
 use whatsapp_cloud_api::{
-    models::{Component, ComponentType, Message, Parameter, Template, Text},
+    models::{
+        Component, ComponentType, Interactive, InteractiveActionButton, Message, Parameter,
+        Template, Text,
+    },
     WhatasppClient, WhatsappError,
 };
 
@@ -54,6 +57,24 @@ async fn send_message_template_with_components_works() -> Result<(), WhatsappErr
     let components = Vec::from([Component::with_parameters(ComponentType::Body, parameters)]);
     let template = Template::with_components(template_name, language, components);
     let message = Message::from_template(&to, template, None);
+    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let response = client.send_message(&message).await?;
+    assert_eq!(response.messages.len(), 1);
+    Ok(())
+}
+
+#[tokio::test]
+async fn send_interactive_button_message_works() -> Result<(), WhatsappError> {
+    setup();
+    let access_token = std::env::var("WHATSAPP_ACCESS_TOKEN")
+        .expect("Missing environment variable WHATSAPP_ACCESS_TOKEN");
+    let phone_number_id = std::env::var("WHATSAPP_PHONE_NUMBER_ID")
+        .expect("Missing environment variable WHATSAPP_PHONE_NUMBER_ID");
+    let to =
+        std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
+    let buttons = vec![InteractiveActionButton::new("test button", "testid")];
+    let interactive_button = Interactive::for_button(buttons, "test body");
+    let message = Message::from_interactive(&to, interactive_button, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);

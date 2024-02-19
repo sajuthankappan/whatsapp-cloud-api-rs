@@ -6,7 +6,7 @@ pub struct Component {
     pub component_type: ComponentType,
     pub sub_type: Option<ComponentSubType>,
     pub parameters: Option<Vec<Parameter>>,
-    pub index: Option<u8>,
+    pub index: Option<i32>,
 }
 
 impl Component {
@@ -32,7 +32,7 @@ impl Component {
         component_type: ComponentType,
         sub_type: ComponentSubType,
         parameters: Vec<Parameter>,
-        index: u8,
+        index: i32,
     ) -> Self {
         Self {
             component_type,
