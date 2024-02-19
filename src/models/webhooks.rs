@@ -110,7 +110,7 @@ pub enum NotificationMessageType {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Audio {
     pub id: String,
-    pub meme_type: String,
+    pub mime_type: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -124,7 +124,7 @@ pub struct Document {
     pub caption: Option<String>,
     pub filename: String,
     pub sha256: String,
-    pub meme_type: String,
+    pub mime_type: String,
     pub id: String,
 }
 
@@ -133,7 +133,7 @@ pub struct Image {
     pub caption: Option<String>,
     pub sha256: String,
     pub id: String,
-    pub meme_type: Option<String>,
+    pub mime_type: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -171,7 +171,7 @@ pub struct ProductItem {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Sticker {
-    pub meme_type: String,
+    pub mime_type: String,
     pub sha256: String,
     pub id: String,
     pub animated: Option<bool>,
@@ -198,7 +198,7 @@ pub struct Video {
     pub filename: String,
     pub sha256: String,
     pub id: String,
-    pub meme_type: String,
+    pub mime_type: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
