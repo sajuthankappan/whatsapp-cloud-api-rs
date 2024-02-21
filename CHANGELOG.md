@@ -3,6 +3,13 @@
 ## [Unreleased]
 
 
+## [0.5.2] - 2024-02-21
+
+### Added
+
+- add interactive list message
+
+
 ## [0.5.1] - 2024-02-19
 
 ### Added

@@ -1,7 +1,7 @@
 use whatsapp_cloud_api::{
     models::{
-        Component, ComponentType, Interactive, InteractiveActionButton, Message, Parameter,
-        Template, Text,
+        Component, ComponentType, Interactive, InteractiveActionButton, InteractiveActionSection,
+        InteractiveActionSectionRow, Message, Parameter, Template, Text,
     },
     WhatasppClient, WhatsappError,
 };
@@ -72,8 +72,30 @@ async fn send_interactive_button_message_works() -> Result<(), WhatsappError> {
         .expect("Missing environment variable WHATSAPP_PHONE_NUMBER_ID");
     let to =
         std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
-    let buttons = vec![InteractiveActionButton::new("test button", "testid")];
+    let buttons = vec![
+        InteractiveActionButton::new("test button", "testid"),
+        InteractiveActionButton::new("test button 2", "testid2"),
+    ];
     let interactive_button = Interactive::for_button(buttons, "test body");
+    let message = Message::from_interactive(&to, interactive_button, None);
+    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let response = client.send_message(&message).await?;
+    assert_eq!(response.messages.len(), 1);
+    Ok(())
+}
+
+#[tokio::test]
+async fn send_interactive_list_message_works() -> Result<(), WhatsappError> {
+    setup();
+    let access_token = std::env::var("WHATSAPP_ACCESS_TOKEN")
+        .expect("Missing environment variable WHATSAPP_ACCESS_TOKEN");
+    let phone_number_id = std::env::var("WHATSAPP_PHONE_NUMBER_ID")
+        .expect("Missing environment variable WHATSAPP_PHONE_NUMBER_ID");
+    let to =
+        std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
+    let rows = vec![InteractiveActionSectionRow::new("testrowid1", "test row 1")];
+    let sections = vec![InteractiveActionSection::new(rows)];
+    let interactive_button = Interactive::for_list("test button", sections, "test body");
     let message = Message::from_interactive(&to, interactive_button, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;

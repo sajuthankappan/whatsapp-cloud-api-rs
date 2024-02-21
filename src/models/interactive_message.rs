@@ -18,9 +18,13 @@ impl Interactive {
         }
     }
 
-    pub fn for_list(button: &str, body_text: &str) -> Self {
+    pub fn for_list(
+        button: &str,
+        sections: Vec<InteractiveActionSection>,
+        body_text: &str,
+    ) -> Self {
         Self {
-            action: InteractiveAction::new_list(button),
+            action: InteractiveAction::new_list(button, sections),
             interactive_type: InteractiveType::List,
             body: Some(InteractiveBody::new(body_text)),
         }
@@ -33,6 +37,7 @@ pub struct InteractiveAction {
     buttons: Option<Vec<InteractiveActionButton>>,
     catalog_id: Option<String>,
     product_retailer_id: Option<String>,
+    sections: Option<Vec<InteractiveActionSection>>,
     // TODO: Other fields
 }
 
@@ -43,15 +48,17 @@ impl InteractiveAction {
             buttons: Some(buttons),
             catalog_id: None,
             product_retailer_id: None,
+            sections: None,
         }
     }
 
-    pub fn new_list(button: &str) -> Self {
+    pub fn new_list(button: &str, sections: Vec<InteractiveActionSection>) -> Self {
         InteractiveAction {
             button: Some(button.into()),
             buttons: None,
             catalog_id: None,
             product_retailer_id: None,
+            sections: Some(sections),
         }
     }
 }
@@ -108,4 +115,49 @@ pub enum InteractiveType {
     Product,
     ProductList,
     Flow,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct InteractiveActionSection {
+    // TODO: product_items
+    rows: Vec<InteractiveActionSectionRow>,
+    title: Option<String>,
+}
+
+impl InteractiveActionSection {
+    pub fn new(rows: Vec<InteractiveActionSectionRow>) -> Self {
+        Self { rows, title: None }
+    }
+
+    pub fn with_title(rows: Vec<InteractiveActionSectionRow>, title: &str) -> Self {
+        Self {
+            rows,
+            title: Some(title.into()),
+        }
+    }
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct InteractiveActionSectionRow {
+    id: String,
+    title: String,
+    description: Option<String>,
+}
+
+impl InteractiveActionSectionRow {
+    pub fn new(id: &str, title: &str) -> Self {
+        Self {
+            id: id.into(),
+            title: title.into(),
+            description: None,
+        }
+    }
+
+    pub fn with_description(id: &str, title: &str, description: &str) -> Self {
+        Self {
+            id: id.into(),
+            title: title.into(),
+            description: Some(description.into()),
+        }
+    }
 }

@@ -11,7 +11,9 @@ pub mod webhooks;
 pub use component::{
     Component, ComponentSubType, ComponentType, Currency, DateTime, Media, Parameter, ParameterType,
 };
-pub use interactive_message::{Interactive, InteractiveActionButton};
+pub use interactive_message::{
+    Interactive, InteractiveActionButton, InteractiveActionSection, InteractiveActionSectionRow,
+};
 pub use media_response::MediaResponse;
 pub use message::{Context, Message, MessageStatus, StatusCode};
 pub use message_response::{
