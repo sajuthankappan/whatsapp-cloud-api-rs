@@ -2,12 +2,16 @@ use serde::{Deserialize, Serialize};
 
 use crate::WHATSAPP;
 
-use super::{interactive_message::Interactive, template_message::Template, text_message::Text};
+use super::{
+    image_message::Image, interactive_message::Interactive, template_message::Template,
+    text_message::Text,
+};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Message {
     biz_opaque_callback_data: Option<String>,
     context: Option<Context>,
+    image: Option<Image>,
     interactive: Option<Interactive>,
     messaging_product: String,
     recipient_type: Option<String>,
@@ -24,9 +28,10 @@ pub struct Message {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum MessageType {
+    Image,
+    Interactive,
     Text,
     Template,
-    Interactive,
 }
 
 impl Message {
@@ -34,6 +39,7 @@ impl Message {
         Self {
             biz_opaque_callback_data: None,
             context,
+            image: None,
             interactive: None,
             messaging_product: WHATSAPP.into(),
             recipient_type: None,
@@ -49,6 +55,7 @@ impl Message {
         Self {
             biz_opaque_callback_data: None,
             context,
+            image: None,
             interactive: None,
             messaging_product: WHATSAPP.into(),
             recipient_type: None,
@@ -64,11 +71,28 @@ impl Message {
         Self {
             biz_opaque_callback_data: None,
             context,
+            image: None,
             interactive: Some(interactive),
             messaging_product: WHATSAPP.into(),
             recipient_type: None,
             status: None,
             message_type: Some(MessageType::Interactive),
+            template: None,
+            text: None,
+            to: to.into(),
+        }
+    }
+
+    pub fn from_image(to: &str, image: Image, context: Option<Context>) -> Self {
+        Self {
+            biz_opaque_callback_data: None,
+            context,
+            image: Some(image),
+            interactive: None,
+            messaging_product: WHATSAPP.into(),
+            recipient_type: None,
+            status: None,
+            message_type: Some(MessageType::Image),
             template: None,
             text: None,
             to: to.into(),

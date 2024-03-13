@@ -1,7 +1,7 @@
 use whatsapp_cloud_api::{
     models::{
-        Component, ComponentType, Interactive, InteractiveActionButton, InteractiveActionSection,
-        InteractiveActionSectionRow, Message, Parameter, Template, Text,
+        Component, ComponentType, Image, Interactive, InteractiveActionButton,
+        InteractiveActionSection, InteractiveActionSectionRow, Message, Parameter, Template, Text,
     },
     WhatasppClient, WhatsappError,
 };
@@ -97,6 +97,24 @@ async fn send_interactive_list_message_works() -> Result<(), WhatsappError> {
     let sections = vec![InteractiveActionSection::new(rows)];
     let interactive_button = Interactive::for_list("test button", sections, "test body");
     let message = Message::from_interactive(&to, interactive_button, None);
+    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let response = client.send_message(&message).await?;
+    assert_eq!(response.messages.len(), 1);
+    Ok(())
+}
+
+#[tokio::test]
+async fn send_image_link_message_works() -> Result<(), WhatsappError> {
+    setup();
+    let access_token = std::env::var("WHATSAPP_ACCESS_TOKEN")
+        .expect("Missing environment variable WHATSAPP_ACCESS_TOKEN");
+    let phone_number_id = std::env::var("WHATSAPP_PHONE_NUMBER_ID")
+        .expect("Missing environment variable WHATSAPP_PHONE_NUMBER_ID");
+    let to =
+        std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
+    let image_link = "https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+    let image = Image::new(image_link, None);
+    let message = Message::from_image(&to, image, None);
     let client = WhatasppClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);

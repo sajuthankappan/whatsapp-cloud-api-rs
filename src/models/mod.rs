@@ -1,4 +1,5 @@
 mod component;
+mod image_message;
 mod interactive_message;
 mod media_response;
 mod message;
@@ -11,6 +12,7 @@ pub mod webhooks;
 pub use component::{
     Component, ComponentSubType, ComponentType, Currency, DateTime, Media, Parameter, ParameterType,
 };
+pub use image_message::Image;
 pub use interactive_message::{
     Interactive, InteractiveActionButton, InteractiveActionSection, InteractiveActionSectionRow,
 };

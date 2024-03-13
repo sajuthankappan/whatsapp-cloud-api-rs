@@ -2,19 +2,25 @@
 
 ## [Unreleased]
 
+## [0.5.3] - 2024-03-13
+
+### Added
+
+- add image message sending 
+
 
 ## [0.5.2] - 2024-02-21
 
 ### Added
 
-- add interactive list message
+- add interactive list message sending
 
 
 ## [0.5.1] - 2024-02-19
 
 ### Added
 
-- add interactive message
+- add interactive message sending
 
 
 ## [0.5.0] - 2024-02-19
