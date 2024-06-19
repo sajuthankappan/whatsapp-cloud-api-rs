@@ -106,6 +106,7 @@ pub enum NotificationMessageType {
     Unknown,
     Video,
     Unsupported,
+    Location,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
