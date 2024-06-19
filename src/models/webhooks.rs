@@ -67,6 +67,7 @@ pub struct NotificationMessage {
     pub sticker: Option<Sticker>,
     pub system: Option<System>,
     pub video: Option<Video>,
+    pub location: Option<Location>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -201,6 +202,14 @@ pub struct Video {
     pub sha256: String,
     pub id: String,
     pub mime_type: String,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Location {
+    pub latitude: f64,
+    pub longitude: f64,
+    pub address: Option<String>,
+    pub name: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
