@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** Fix typo of the name WhatsappClient (it was incorrectly spelled WhatasppClient)
+
 ## [0.5.3] - 2024-03-13
 
 ### Added

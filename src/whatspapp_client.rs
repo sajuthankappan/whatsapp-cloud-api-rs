@@ -5,12 +5,12 @@ use crate::{
 
 const FACEBOOK_GRAPH_API_BASE_URL: &str = "https://graph.facebook.com/v17.0";
 
-pub struct WhatasppClient {
+pub struct WhatsappClient {
     access_token: String,
     phone_number_id: String,
 }
 
-impl WhatasppClient {
+impl WhatsappClient {
     pub fn new(access_token: &str, phone_number_id: &str) -> Self {
         Self {
             access_token: access_token.into(),

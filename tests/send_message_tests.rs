@@ -3,7 +3,7 @@ use whatsapp_cloud_api::{
         Component, ComponentType, Image, Interactive, InteractiveActionButton,
         InteractiveActionSection, InteractiveActionSectionRow, Message, Parameter, Template, Text,
     },
-    WhatasppClient, WhatsappError,
+    WhatsappClient, WhatsappError,
 };
 
 #[tokio::test]
@@ -17,7 +17,7 @@ async fn send_text_message_works() -> Result<(), WhatsappError> {
         std::env::var("WHATSAPP_SEND_TO").expect("Missing environment variable WHATSAPP_SEND_TO");
     let text = Text::new("test message");
     let message = Message::from_text(&to, text, None);
-    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let client = WhatsappClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
     Ok(())
@@ -36,7 +36,7 @@ async fn send_message_template_works() -> Result<(), WhatsappError> {
     let language = "en_US";
     let template = Template::new(template_name, language);
     let message = Message::from_template(&to, template, None);
-    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let client = WhatsappClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
     Ok(())
@@ -57,7 +57,7 @@ async fn send_message_template_with_components_works() -> Result<(), WhatsappErr
     let components = Vec::from([Component::with_parameters(ComponentType::Body, parameters)]);
     let template = Template::with_components(template_name, language, components);
     let message = Message::from_template(&to, template, None);
-    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let client = WhatsappClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
     Ok(())
@@ -78,7 +78,7 @@ async fn send_interactive_button_message_works() -> Result<(), WhatsappError> {
     ];
     let interactive_button = Interactive::for_button(buttons, "test body");
     let message = Message::from_interactive(&to, interactive_button, None);
-    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let client = WhatsappClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
     Ok(())
@@ -97,7 +97,7 @@ async fn send_interactive_list_message_works() -> Result<(), WhatsappError> {
     let sections = vec![InteractiveActionSection::new(rows)];
     let interactive_button = Interactive::for_list("test button", sections, "test body");
     let message = Message::from_interactive(&to, interactive_button, None);
-    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let client = WhatsappClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
     Ok(())
@@ -115,7 +115,7 @@ async fn send_image_link_message_works() -> Result<(), WhatsappError> {
     let image_link = "https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
     let image = Image::new(image_link, None);
     let message = Message::from_image(&to, image, None);
-    let client = WhatasppClient::new(&access_token, &phone_number_id);
+    let client = WhatsappClient::new(&access_token, &phone_number_id);
     let response = client.send_message(&message).await?;
     assert_eq!(response.messages.len(), 1);
     Ok(())
