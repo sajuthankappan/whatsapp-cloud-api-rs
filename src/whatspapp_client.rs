@@ -1,5 +1,8 @@
 use crate::{
-    models::{MediaResponse, Message, MessageResponse, MessageStatus, MessageStatusResponse},
+    models::{
+        CodeMethod, CodeRequestParams, CodeVerifyParams, MediaResponse, Message, MessageResponse,
+        MessageStatus, MessageStatusResponse, PhoneNumberResponse,
+    },
     WhatsappError,
 };
 
@@ -30,6 +33,23 @@ impl WhatsappClient {
         http_client::post(&self.messages_api_url(), &self.access_token, message).await
     }
 
+    pub async fn request_code(
+        &self,
+        code_method: CodeMethod,
+        language: &str,
+    ) -> Result<PhoneNumberResponse, WhatsappError> {
+        let params = CodeRequestParams {
+            code_method,
+            language: language.into(),
+        };
+        http_client::post(&self.request_code_api_url(), &self.access_token, &params).await
+    }
+
+    pub async fn verify_code(&self, code: &str) -> Result<PhoneNumberResponse, WhatsappError> {
+        let params = CodeVerifyParams { code: code.into() };
+        http_client::post(&self.verify_code_api_url(), &self.access_token, &params).await
+    }
+
     pub async fn mark_message_as_read(
         &self,
         message_id: &str,
@@ -56,6 +76,20 @@ impl WhatsappClient {
 
     fn media_api_url(&self, media_id: &str) -> String {
         format!("{FACEBOOK_GRAPH_API_BASE_URL}/{media_id}")
+    }
+
+    fn request_code_api_url(&self) -> String {
+        format!(
+            "{FACEBOOK_GRAPH_API_BASE_URL}/{}/request_code",
+            self.phone_number_id
+        )
+    }
+
+    fn verify_code_api_url(&self) -> String {
+        format!(
+            "{FACEBOOK_GRAPH_API_BASE_URL}/{}/verify_code",
+            self.phone_number_id
+        )
     }
 }
 

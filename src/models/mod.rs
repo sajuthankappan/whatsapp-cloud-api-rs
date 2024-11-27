@@ -4,6 +4,7 @@ mod interactive_message;
 mod media_response;
 mod message;
 mod message_response;
+mod phone_number;
 mod template_message;
 mod text_message;
 
@@ -21,5 +22,7 @@ pub use message::{Context, Message, MessageStatus, StatusCode};
 pub use message_response::{
     ContactResponse, CreatedMessage, MessageResponse, MessageStatusResponse,
 };
+pub use phone_number::{CodeMethod, PhoneNumberResponse};
+pub(crate) use phone_number::{CodeRequestParams, CodeVerifyParams};
 pub use template_message::{Language, Template};
 pub use text_message::Text;
