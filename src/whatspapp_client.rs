@@ -18,6 +18,14 @@ impl WhatsappClient {
         }
     }
 
+    pub fn set_access_token(&mut self, access_token: &str) {
+        self.access_token = access_token.into();
+    }
+
+    pub fn set_phone_number_id(&mut self, phone_number_id: &str) {
+        self.access_token = phone_number_id.into();
+    }
+
     pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {
         http_client::post(&self.messages_api_url(), &self.access_token, message).await
     }

@@ -6,6 +6,10 @@
 
 - **Breaking:** Fix typo of the name WhatsappClient (it was incorrectly spelled WhatasppClient)
 
+### Added
+
+- add methods set_access_tokenW and set_phone_number_id for WhatsappClient
+
 ## [0.5.3] - 2024-03-13
 
 ### Added
