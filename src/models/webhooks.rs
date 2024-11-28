@@ -2,6 +2,16 @@ use serde::{Deserialize, Serialize};
 
 use super::message::StatusCode;
 
+#[derive(Deserialize, Debug)]
+pub struct VerificationRequest {
+    #[serde(rename = "hub.mode")]
+    pub mode: String,
+    #[serde(rename = "hub.verify_token")]
+    pub verify_token: String,
+    #[serde(rename = "hub.challenge")]
+    pub challenge: String,
+}
+
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct NotificationPayload {
     pub object: String,

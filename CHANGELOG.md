@@ -10,6 +10,7 @@
 
 - add methods set_access_token and set_phone_number_id for WhatsappClient
 - add methods request_code and verify_code for WhatsappClient
+- add model struct VerificationRequest to help responding to webhook verification request
 
 ## [0.5.3] - 2024-03-13
 
