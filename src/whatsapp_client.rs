@@ -6,9 +6,10 @@ use crate::{
     WhatsappError,
 };
 
-const FACEBOOK_GRAPH_API_BASE_URL: &str = "https://graph.facebook.com/v17.0";
+const FACEBOOK_GRAPH_API_BASE_URL: &str = "https://graph.facebook.com";
 
 pub struct WhatsappClient {
+    version: String,
     access_token: String,
     phone_number_id: String,
 }
@@ -16,9 +17,18 @@ pub struct WhatsappClient {
 impl WhatsappClient {
     pub fn new(access_token: &str, phone_number_id: &str) -> Self {
         Self {
+            version: "v20.0".into(),
             access_token: access_token.into(),
             phone_number_id: phone_number_id.into(),
         }
+    }
+
+    pub fn version(&mut self) -> &str {
+        &self.version
+    }
+
+    pub fn set_version(&mut self, version: &str) {
+        self.version = version.into();
     }
 
     pub fn set_access_token(&mut self, access_token: &str) {
@@ -67,27 +77,34 @@ impl WhatsappClient {
         http_client::get(&self.media_api_url(media_id), &self.access_token).await
     }
 
+    fn facebook_api_version_url(&self) -> String {
+        format!("{FACEBOOK_GRAPH_API_BASE_URL}/{}", self.version)
+    }
+
     fn messages_api_url(&self) -> String {
         format!(
-            "{FACEBOOK_GRAPH_API_BASE_URL}/{}/messages",
+            "{}/{}/messages",
+            self.facebook_api_version_url(),
             self.phone_number_id
         )
     }
 
     fn media_api_url(&self, media_id: &str) -> String {
-        format!("{FACEBOOK_GRAPH_API_BASE_URL}/{media_id}")
+        format!("{}/{media_id}", self.facebook_api_version_url())
     }
 
     fn request_code_api_url(&self) -> String {
         format!(
-            "{FACEBOOK_GRAPH_API_BASE_URL}/{}/request_code",
+            "{}/{}/request_code",
+            self.facebook_api_version_url(),
             self.phone_number_id
         )
     }
 
     fn verify_code_api_url(&self) -> String {
         format!(
-            "{FACEBOOK_GRAPH_API_BASE_URL}/{}/verify_code",
+            "{}/{}/verify_code",
+            self.facebook_api_version_url(),
             self.phone_number_id
         )
     }

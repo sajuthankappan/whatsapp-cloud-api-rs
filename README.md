@@ -12,6 +12,9 @@
 - Get / Upload media
 - Models to help processing incoming webhooks
 
+## Supported Graph API Version
+This crate is designed & tested for facebook graph api version v20.0. You may change the version using the set_verion() method. But, do it at your own risk :)
+
 ## Usage example
 
 Send template based text message
