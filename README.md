@@ -8,7 +8,7 @@
 
 ## Features
 
-- Sending messages using Whatspp Cloud API
+- Sending messages using Whatsapp Cloud API
 - Get / Upload media
 - Models to help processing incoming webhooks
 
@@ -24,7 +24,7 @@ let template_name = "hello_world";
 let language = "en_US";
 let template = Template::new(template_name, language);
 let message = Message::from_template(&to, template, None);
-let client = WhatsppClient::new(&access_token, &phone_number_id);
+let client = WhatsappClient::new(&access_token, &phone_number_id);
 client.send_message(&message).await?;
 ```
 
