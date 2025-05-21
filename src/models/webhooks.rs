@@ -84,8 +84,8 @@ pub struct NotificationMessage {
 pub struct Context {
     pub forwarded: Option<bool>,
     pub frequently_forwarded: Option<bool>,
-    pub from: String,
-    pub id: String,
+    pub from: Option<String>,
+    pub id: Option<String>,
     pub referred_product: Option<ReferredProduct>,
 }
 

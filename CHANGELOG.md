@@ -2,9 +2,13 @@
 
 ## [Unreleased]
 
+## [0.5.4] - 2025-05-21
+
 ### Changed
 
 - **Breaking:** Fix typo of the name WhatsappClient (it was incorrectly spelled WhatasppClient)
+- upgrade graph api version to v20.0
+- Fix: make fields optional in webbooks context object
 
 ### Added
 
@@ -12,7 +16,6 @@
 - add methods request_code and verify_code for WhatsappClient
 - add model struct VerificationRequest to help responding to webhook verification request
 - add getter and setter for WhatsappClient version
-- upgrade graph api version to v20.0
 
 ## [0.5.3] - 2024-03-13
 
