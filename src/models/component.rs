@@ -115,3 +115,25 @@ pub struct Media {
     pub caption: Option<String>,
     pub filename: Option<String>,
 }
+
+impl Media {
+    /// Media hosted at a public URL
+    pub fn from_link(link: &str) -> Self {
+        Self {
+            id: None,
+            link: Some(link.into()),
+            caption: None,
+            filename: None,
+        }
+    }
+
+    /// Media uploaded to WhatsApp, by media id
+    pub fn from_id(id: &str) -> Self {
+        Self {
+            id: Some(id.into()),
+            link: None,
+            caption: None,
+            filename: None,
+        }
+    }
+}

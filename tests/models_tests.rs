@@ -639,3 +639,276 @@ fn webhook_status_without_optional_fields_deserializes() {
     let error = &status.errors.as_ref().unwrap()[0];
     assert!(error.message.is_none() && error.error_data.is_none() && error.href.is_none());
 }
+
+// Interactive message types (expected JSON taken from Meta's documented examples)
+
+mod interactive {
+    use serde_json::{Value, json};
+    use whatsapp::models::{
+        FlowAction, Interactive, InteractiveActionButton, InteractiveActionSection,
+        InteractiveActionSectionRow, InteractiveHeader, Media, ProductSection,
+    };
+
+    /// Removes `null` values, so payloads compare by the fields that are actually set
+    fn strip_nulls(value: Value) -> Value {
+        match value {
+            Value::Object(map) => Value::Object(
+                map.into_iter()
+                    .filter(|(_, v)| !v.is_null())
+                    .map(|(k, v)| (k, strip_nulls(v)))
+                    .collect(),
+            ),
+            Value::Array(items) => Value::Array(items.into_iter().map(strip_nulls).collect()),
+            other => other,
+        }
+    }
+
+    fn to_json(interactive: &Interactive) -> Value {
+        strip_nulls(serde_json::to_value(interactive).unwrap())
+    }
+
+    #[test]
+    fn button_message_json_is_unchanged() {
+        let interactive = Interactive::for_button(
+            vec![InteractiveActionButton::new("Yes", "yes-id")],
+            "Continue?",
+        );
+        // Output of 0.7.0, before header / footer / new action fields were added
+        let before: Value = serde_json::from_str(r#"{"action":{"button":null,"buttons":[{"type":"reply","reply":{"title":"Yes","id":"yes-id"}}],"catalog_id":null,"product_retailer_id":null,"sections":null},"body":{"text":"Continue?"},"type":"button"}"#).unwrap();
+
+        assert_eq!(to_json(&interactive), strip_nulls(before));
+    }
+
+    #[test]
+    fn list_message_json_is_unchanged() {
+        let interactive = Interactive::for_list(
+            "Choose",
+            vec![
+                InteractiveActionSection::new(vec![InteractiveActionSectionRow::new(
+                    "row-1", "First",
+                )]),
+                InteractiveActionSection::with_title(
+                    vec![InteractiveActionSectionRow::with_description(
+                        "row-2", "Second", "More",
+                    )],
+                    "Section",
+                ),
+            ],
+            "Pick one",
+        );
+        // Output of 0.7.0, before header / footer / new action fields were added
+        let before: Value = serde_json::from_str(r#"{"action":{"button":"Choose","buttons":null,"catalog_id":null,"product_retailer_id":null,"sections":[{"rows":[{"id":"row-1","title":"First","description":null}],"title":null},{"rows":[{"id":"row-2","title":"Second","description":"More"}],"title":"Section"}]},"body":{"text":"Pick one"},"type":"list"}"#).unwrap();
+
+        assert_eq!(to_json(&interactive), strip_nulls(before));
+    }
+
+    #[test]
+    fn button_message_with_header_and_footer_serializes() {
+        let interactive = Interactive::for_button(
+            vec![InteractiveActionButton::new("Yes", "yes-id")],
+            "Continue?",
+        )
+        .with_header(InteractiveHeader::text("Order #42"))
+        .with_footer("Reply within 24 hours");
+        let json = to_json(&interactive);
+
+        assert_eq!(
+            json["header"],
+            json!({ "type": "text", "text": "Order #42" })
+        );
+        assert_eq!(json["footer"], json!({ "text": "Reply within 24 hours" }));
+    }
+
+    #[test]
+    fn media_headers_serialize() {
+        assert_eq!(
+            strip_nulls(
+                serde_json::to_value(InteractiveHeader::video(Media::from_id("123"))).unwrap()
+            ),
+            json!({ "type": "video", "video": { "id": "123" } })
+        );
+        let mut document = Media::from_link("https://example.com/menu.pdf");
+        document.filename = Some("menu.pdf".into());
+        assert_eq!(
+            strip_nulls(serde_json::to_value(InteractiveHeader::document(document)).unwrap()),
+            json!({ "type": "document", "document": { "link": "https://example.com/menu.pdf", "filename": "menu.pdf" } })
+        );
+    }
+
+    #[test]
+    fn cta_url_message_matches_meta_example() {
+        let interactive = Interactive::for_cta_url(
+            "See Dates",
+            "https://www.luckyshrub.com?clickID=kqDGWd24Q5TRwoEQTICY7W1JKoXvaZOXWAS7h1P76s0R7Paec4",
+            "Tap the button below to see available dates.",
+        )
+        .with_header(InteractiveHeader::image(Media::from_link(
+            "https://www.luckyshrub.com/assets/lucky-shrub-banner-logo-v1.png",
+        )))
+        .with_footer("Dates subject to change.");
+
+        assert_eq!(
+            to_json(&interactive),
+            json!({
+                "type": "cta_url",
+                "header": {
+                    "type": "image",
+                    "image": { "link": "https://www.luckyshrub.com/assets/lucky-shrub-banner-logo-v1.png" }
+                },
+                "body": { "text": "Tap the button below to see available dates." },
+                "action": {
+                    "name": "cta_url",
+                    "parameters": {
+                        "display_text": "See Dates",
+                        "url": "https://www.luckyshrub.com?clickID=kqDGWd24Q5TRwoEQTICY7W1JKoXvaZOXWAS7h1P76s0R7Paec4"
+                    }
+                },
+                "footer": { "text": "Dates subject to change." }
+            })
+        );
+    }
+
+    #[test]
+    fn flow_message_matches_meta_example() {
+        let flow = FlowAction::by_id("123456", "Book!")
+            .flow_token("AQAAAAACS5FpgQ_cAAAAAD0QI3s.")
+            .navigate("<SCREEN_NAME>", Some(json!({ "product_name": "name" })));
+        let interactive = Interactive::for_flow(flow, "Flow message body")
+            .with_header(InteractiveHeader::text("Flow message header"))
+            .with_footer("Flow message footer");
+
+        assert_eq!(
+            to_json(&interactive),
+            json!({
+                "type": "flow",
+                "header": { "type": "text", "text": "Flow message header" },
+                "body": { "text": "Flow message body" },
+                "footer": { "text": "Flow message footer" },
+                "action": {
+                    "name": "flow",
+                    "parameters": {
+                        "flow_message_version": "3",
+                        "flow_token": "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                        "flow_id": "123456",
+                        "flow_cta": "Book!",
+                        "flow_action": "navigate",
+                        "flow_action_payload": {
+                            "screen": "<SCREEN_NAME>",
+                            "data": { "product_name": "name" }
+                        }
+                    }
+                }
+            })
+        );
+    }
+
+    #[test]
+    fn flow_message_by_name_in_draft_mode_serializes() {
+        let flow = FlowAction::by_name("appointment_booking_v1", "Book!").draft();
+        let json = to_json(&Interactive::for_flow(flow, "Book an appointment"));
+
+        assert_eq!(
+            json["action"]["parameters"],
+            json!({
+                "flow_message_version": "3",
+                "flow_name": "appointment_booking_v1",
+                "flow_cta": "Book!",
+                "mode": "draft"
+            })
+        );
+    }
+
+    #[test]
+    fn flow_message_with_data_exchange_serializes() {
+        let flow = FlowAction::by_id("123456", "Start")
+            .navigate("WELCOME", None)
+            .data_exchange();
+        let parameters = &to_json(&Interactive::for_flow(flow, "Body"))["action"]["parameters"];
+
+        assert_eq!(parameters["flow_action"], "data_exchange");
+        assert!(parameters.get("flow_action_payload").is_none());
+    }
+
+    #[test]
+    fn product_message_matches_meta_example() {
+        let interactive = Interactive::for_product("CATALOG_ID", "ID_TEST_ITEM_1")
+            .with_body("BODY_TEXT")
+            .with_footer("FOOTER_TEXT");
+
+        assert_eq!(
+            to_json(&interactive),
+            json!({
+                "type": "product",
+                "body": { "text": "BODY_TEXT" },
+                "footer": { "text": "FOOTER_TEXT" },
+                "action": {
+                    "catalog_id": "CATALOG_ID",
+                    "product_retailer_id": "ID_TEST_ITEM_1"
+                }
+            })
+        );
+    }
+
+    #[test]
+    fn product_message_without_body_serializes() {
+        let json = to_json(&Interactive::for_product("CATALOG_ID", "ID_TEST_ITEM_1"));
+
+        assert!(json.get("body").is_none());
+        assert_eq!(json["type"], "product");
+    }
+
+    #[test]
+    fn product_list_message_matches_meta_example() {
+        let interactive = Interactive::for_product_list(
+            "HEADER_CONTENT",
+            "CATALOG_ID",
+            vec![ProductSection::new("SECTION_TITLE", &["PRODUCT-SKU"])],
+            "BODY_CONTENT",
+        )
+        .with_footer("FOOTER_CONTENT");
+
+        assert_eq!(
+            to_json(&interactive),
+            json!({
+                "type": "product_list",
+                "header": { "type": "text", "text": "HEADER_CONTENT" },
+                "body": { "text": "BODY_CONTENT" },
+                "footer": { "text": "FOOTER_CONTENT" },
+                "action": {
+                    "catalog_id": "CATALOG_ID",
+                    "sections": [{
+                        "title": "SECTION_TITLE",
+                        "product_items": [{ "product_retailer_id": "PRODUCT-SKU" }]
+                    }]
+                }
+            })
+        );
+    }
+
+    #[test]
+    fn catalog_message_matches_meta_example() {
+        let interactive =
+            Interactive::for_catalog("<BODY_TEXT>", Some("<THUMBNAIL_PRODUCT_RETAILER_ID>"))
+                .with_footer("<FOOTER_TEXT>");
+
+        assert_eq!(
+            to_json(&interactive),
+            json!({
+                "type": "catalog_message",
+                "body": { "text": "<BODY_TEXT>" },
+                "action": {
+                    "name": "catalog_message",
+                    "parameters": { "thumbnail_product_retailer_id": "<THUMBNAIL_PRODUCT_RETAILER_ID>" }
+                },
+                "footer": { "text": "<FOOTER_TEXT>" }
+            })
+        );
+    }
+
+    #[test]
+    fn catalog_message_without_thumbnail_serializes() {
+        let json = to_json(&Interactive::for_catalog("Browse our catalog", None));
+
+        assert_eq!(json["action"], json!({ "name": "catalog_message" }));
+    }
+}

@@ -15,7 +15,8 @@ pub use component::{
 };
 pub use image_message::Image;
 pub use interactive_message::{
-    Interactive, InteractiveActionButton, InteractiveActionSection, InteractiveActionSectionRow,
+    FlowAction, Interactive, InteractiveActionButton, InteractiveActionSection,
+    InteractiveActionSectionRow, InteractiveHeader, ProductSection,
 };
 pub use media_response::MediaResponse;
 pub use message::{Context, Message, MessageStatus, StatusCode};

@@ -8,10 +8,14 @@
 - webhooks: status `Error` now has `message`, `error_data.details` and `href`
 - webhooks: `Conversation.expiration_timestamp`; `Pricing.billable`, `category` and `pricing_type`
 - webhooks: shared contact cards now include `addresses`, `birthday`, `emails`, `org` and `urls`
+- interactive messages: CTA URL (`Interactive::for_cta_url`), flow (`Interactive::for_flow` with `FlowAction`), single product (`Interactive::for_product`), product list (`Interactive::for_product_list` with `ProductSection`) and catalog (`Interactive::for_catalog`) messages. Payloads match Meta's documented examples but have not been tested against the live API yet
+- interactive messages: optional header (`InteractiveHeader`: text, image, video, document) and footer via `with_header` / `with_footer`, plus `with_body`
+- `Media::from_link` and `Media::from_id`
 
 ### Changed
 
 - GitHub repository renamed from `whatsapp-cloud-api-rs` to `whatsapp-rs`
+- interactive messages no longer send `null` for unused action fields (e.g. `"catalog_id": null` in button messages)
 
 ## [0.7.0] - 2026-09-23
 
