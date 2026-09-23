@@ -97,6 +97,10 @@ For more details, please see the [tests] folder
 
 [tests]: https://github.com/sajuthankappan/whatsapp-rs/tree/main/tests
 
+## Maintainer
+
+Maintained by [Saju Thankappan](https://github.com/sajuthankappan), creator of [Smito One](https://smito.in).
+
 ## License
 
 Licensed under either of
