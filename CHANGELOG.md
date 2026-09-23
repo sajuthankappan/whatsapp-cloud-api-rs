@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- `LICENSE-MIT` and `LICENSE-APACHE` files
+
 ## [0.7.0] - 2026-09-23
 
 ### Changed
