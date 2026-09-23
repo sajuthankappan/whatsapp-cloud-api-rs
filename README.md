@@ -1,8 +1,10 @@
-# whatsapp &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs]
+# whatsapp &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs] [![CI Status]][actions]
 [Latest Version]: https://img.shields.io/crates/v/whatsapp.svg
 [crates.io]: https://crates.io/crates/whatsapp
 [Docs]: https://docs.rs/whatsapp/badge.svg
 [docs.rs]: https://docs.rs/whatsapp
+[CI Status]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/actions/workflows/ci.yml/badge.svg?branch=main
+[actions]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/actions/workflows/ci.yml
 
 **WhatsApp Business Cloud API client for Rust**
 
