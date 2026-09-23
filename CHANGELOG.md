@@ -4,6 +4,7 @@
 
 ### Changed
 
+- upgrade default graph api version from v20.0 (expires 2026-09-24) to v26.0
 - **Breaking:** crate renamed from `whatsapp-cloud-api` to `whatsapp` (import path is now `whatsapp::`)
 - **Breaking:** upgrade reqwest from 0.11 to 0.13 (`WhatsappError::ReqwestError` now wraps a `reqwest` 0.13 error)
 - upgrade to Rust edition 2024 (minimum supported Rust version is now 1.85)

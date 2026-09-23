@@ -17,7 +17,7 @@ pub struct WhatsappClient {
 impl WhatsappClient {
     pub fn new(access_token: &str, phone_number_id: &str) -> Self {
         Self {
-            version: "v20.0".into(),
+            version: "v26.0".into(),
             access_token: access_token.into(),
             phone_number_id: phone_number_id.into(),
         }

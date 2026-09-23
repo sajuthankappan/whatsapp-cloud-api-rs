@@ -20,7 +20,7 @@ This crate was previously published as [`whatsapp-cloud-api`](https://crates.io/
 - Models to help processing incoming webhooks
 
 ## Supported Graph API Version
-This crate is designed & tested for facebook graph api version v20.0. You may change the version using the set_verion() method. But, do it at your own risk :)
+This crate uses Facebook Graph API version v26.0 by default. You may change the version using the `set_version()` method. But, do it at your own risk :)
 
 ## Usage example
 
