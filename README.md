@@ -1,10 +1,17 @@
-# whatsapp-cloud-api &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs]
-[Latest Version]: https://img.shields.io/crates/v/whatsapp-cloud-api.svg
-[crates.io]: https://crates.io/crates/whatsapp-cloud-api
-[Docs]: https://docs.rs/whatsapp-cloud-api/badge.svg
-[docs.rs]: https://docs.rs/whatsapp-cloud-api
+# whatsapp &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs]
+[Latest Version]: https://img.shields.io/crates/v/whatsapp.svg
+[crates.io]: https://crates.io/crates/whatsapp
+[Docs]: https://docs.rs/whatsapp/badge.svg
+[docs.rs]: https://docs.rs/whatsapp
 
-**Whatsapp Cloud API Rust Client**
+**WhatsApp Business Cloud API client for Rust**
+
+## Migrating from `whatsapp-cloud-api`
+
+This crate was previously published as [`whatsapp-cloud-api`](https://crates.io/crates/whatsapp-cloud-api) (up to 0.5.x). To migrate:
+
+- In `Cargo.toml`, replace `whatsapp-cloud-api = "0.5"` with `whatsapp = "0.6"`
+- In code, replace `whatsapp_cloud_api::` with `whatsapp::`
 
 ## Features
 
@@ -61,4 +68,4 @@ client.send_message(&message).await?;
 
 For more details, please see the [tests] folder
 
-[tests]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/tree/master/tests
+[tests]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/tree/main/tests

@@ -1,4 +1,4 @@
-use whatsapp_cloud_api::{
+use whatsapp::{
     WhatsappClient, WhatsappError,
     models::{
         Component, ComponentType, Image, Interactive, InteractiveActionButton,

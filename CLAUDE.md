@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Rust client library for the WhatsApp Cloud API (Meta Graph API), published on crates.io as `whatsapp-cloud-api`.
+Rust client library for the WhatsApp Cloud API (Meta Graph API), published on crates.io as `whatsapp` (0.6.0+; versions up to 0.5.x were published as `whatsapp-cloud-api`).
 
 ## Workflow
 

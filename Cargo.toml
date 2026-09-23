@@ -1,14 +1,14 @@
 [package]
-name = "whatsapp-cloud-api"
+name = "whatsapp"
 version = "0.5.4"
 edition = "2024"
 rust-version = "1.85"
 license = "MIT OR Apache-2.0"
-description = "Whatsapp Cloud API Rust Client"
+description = "WhatsApp Business Cloud API client"
 homepage = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
 repository = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
 readme = "README.md"
-keywords = ["whatsapp"]
+keywords = ["whatsapp", "cloud-api", "business"]
 categories = ["api-bindings"]
 
 [dependencies]
