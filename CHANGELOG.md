@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-09-23
+
+### Changed
+
+- README: maintainer section (documentation only, no code changes)
+
 ## [0.8.0] - 2026-09-23
 
 ### Added
