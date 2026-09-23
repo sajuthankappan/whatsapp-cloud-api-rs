@@ -2,7 +2,7 @@
 name = "whatsapp"
 version = "0.6.0"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.87"
 license = "MIT OR Apache-2.0"
 description = "WhatsApp Business Cloud API client"
 homepage = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"

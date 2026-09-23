@@ -4,6 +4,7 @@
 
 ### Changed
 
+- minimum supported Rust version raised from 1.85 to 1.87 (required by current transitive dependencies of reqwest)
 - **Breaking:** webhooks: `Video.filename` is now optional (Meta does not send it for videos, which made the whole payload fail to parse)
 - **Breaking:** webhooks: `System` now maps `type` to `system_type`, and `system_type`, `identity`, `customer` are optional (user_changed_number payloads failed to parse)
 - **Breaking:** webhooks: `NotificationMessageType` is now `#[non_exhaustive]`, and unrecognised message types deserialize as `Unknown` instead of failing the whole payload
@@ -15,6 +16,7 @@
 ### Added
 
 - webhooks: `reaction`, `contacts` (shared contact cards) and `request_welcome` message types
+- GitHub Actions CI: fmt, clippy (native-tls and rustls), offline tests, MSRV check
 
 ## [0.6.0] - 2026-09-23
 
