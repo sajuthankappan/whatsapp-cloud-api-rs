@@ -157,11 +157,10 @@ mod http_client {
                 let json = resp.json::<U>().await?;
                 Ok(json)
             }
-            _ => {
-                log::warn!("{:?}", &resp);
-                let error_text = &resp.text().await?;
-                log::warn!("{:?}", &error_text);
-                Err(WhatsappError::UnexpectedError(error_text.to_string()))
+            status => {
+                let error_text = resp.text().await?;
+                log::warn!("{status}: {error_text}");
+                Err(WhatsappError::from_response(status.as_u16(), error_text))
             }
         }
     }
@@ -188,11 +187,10 @@ mod http_client {
                 let json = resp.json::<U>().await?;
                 Ok(json)
             }
-            _ => {
-                log::warn!("{:?}", &resp);
-                let error_text = &resp.text().await?;
-                log::warn!("{:?}", &error_text);
-                Err(WhatsappError::UnexpectedError(error_text.to_string()))
+            status => {
+                let error_text = resp.text().await?;
+                log::warn!("{status}: {error_text}");
+                Err(WhatsappError::from_response(status.as_u16(), error_text))
             }
         }
     }
