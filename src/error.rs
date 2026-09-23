@@ -25,7 +25,7 @@ impl Error for WhatsappError {
 }
 
 impl From<reqwest::Error> for WhatsappError {
-  fn from(e: reqwest::Error) -> Self {
-    WhatsappError::ReqwestError(e)
-  }
+    fn from(e: reqwest::Error) -> Self {
+        WhatsappError::ReqwestError(e)
+    }
 }

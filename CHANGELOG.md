@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- upgrade to Rust edition 2024 (minimum supported Rust version is now 1.85)
+- Fix: `set_phone_number_id` was overwriting the access token instead of the phone number id
+
 ## [0.5.4] - 2025-05-21
 
 ### Changed

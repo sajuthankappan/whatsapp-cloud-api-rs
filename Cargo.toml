@@ -1,7 +1,8 @@
 [package]
 name = "whatsapp-cloud-api"
 version = "0.5.4"
-edition = "2021"
+edition = "2024"
+rust-version = "1.85"
 license = "MIT OR Apache-2.0"
 description = "Whatsapp Cloud API Rust Client"
 homepage = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"

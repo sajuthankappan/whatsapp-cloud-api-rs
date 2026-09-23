@@ -1,9 +1,9 @@
 use whatsapp_cloud_api::{
+    WhatsappClient, WhatsappError,
     models::{
         Component, ComponentType, Image, Interactive, InteractiveActionButton,
         InteractiveActionSection, InteractiveActionSectionRow, Message, Parameter, Template, Text,
     },
-    WhatsappClient, WhatsappError,
 };
 
 #[tokio::test]

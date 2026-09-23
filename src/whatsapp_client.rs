@@ -1,9 +1,9 @@
 use crate::{
+    WhatsappError,
     models::{
         CodeMethod, CodeRequestParams, CodeVerifyParams, MediaResponse, Message, MessageResponse,
         MessageStatus, MessageStatusResponse, PhoneNumberResponse,
     },
-    WhatsappError,
 };
 
 const FACEBOOK_GRAPH_API_BASE_URL: &str = "https://graph.facebook.com";
@@ -36,7 +36,7 @@ impl WhatsappClient {
     }
 
     pub fn set_phone_number_id(&mut self, phone_number_id: &str) {
-        self.access_token = phone_number_id.into();
+        self.phone_number_id = phone_number_id.into();
     }
 
     pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {
@@ -112,7 +112,7 @@ impl WhatsappClient {
 
 mod http_client {
     use reqwest::StatusCode;
-    use serde::{de::DeserializeOwned, Serialize};
+    use serde::{Serialize, de::DeserializeOwned};
 
     use crate::WhatsappError;
 
@@ -162,5 +162,18 @@ mod http_client {
                 Err(WhatsappError::UnexpectedError(error_text.to_string()))
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn set_phone_number_id_updates_phone_number_id() {
+        let mut client = WhatsappClient::new("token", "old-id");
+        client.set_phone_number_id("new-id");
+        assert_eq!(client.phone_number_id, "new-id");
+        assert_eq!(client.access_token, "token");
     }
 }
