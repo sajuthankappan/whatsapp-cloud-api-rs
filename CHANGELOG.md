@@ -6,6 +6,10 @@
 
 - `LICENSE-MIT` and `LICENSE-APACHE` files
 
+### Changed
+
+- GitHub repository renamed from `whatsapp-cloud-api-rs` to `whatsapp-rs`
+
 ## [0.7.0] - 2026-09-23
 
 ### Changed

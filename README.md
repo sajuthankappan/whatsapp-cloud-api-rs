@@ -3,8 +3,8 @@
 [crates.io]: https://crates.io/crates/whatsapp
 [Docs]: https://docs.rs/whatsapp/badge.svg
 [docs.rs]: https://docs.rs/whatsapp
-[CI Status]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/actions/workflows/ci.yml/badge.svg?branch=main
-[actions]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/actions/workflows/ci.yml
+[CI Status]: https://github.com/sajuthankappan/whatsapp-rs/actions/workflows/ci.yml/badge.svg?branch=main
+[actions]: https://github.com/sajuthankappan/whatsapp-rs/actions/workflows/ci.yml
 
 **WhatsApp Business Cloud API client for Rust**
 
@@ -95,7 +95,7 @@ match client.send_message(&message).await {
 
 For more details, please see the [tests] folder
 
-[tests]: https://github.com/sajuthankappan/whatsapp-cloud-api-rs/tree/main/tests
+[tests]: https://github.com/sajuthankappan/whatsapp-rs/tree/main/tests
 
 ## License
 
