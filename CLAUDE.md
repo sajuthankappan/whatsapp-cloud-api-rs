@@ -4,7 +4,8 @@ Rust client library for the WhatsApp Cloud API (Meta Graph API), published on cr
 
 ## Workflow
 
-- Solo-maintained repo: commit directly to `main`. No feature branches, no PRs.
+- Never commit unless explicitly asked to.
+- Solo-maintained repo: when asked to commit, commit directly to `main`. No feature branches, no PRs.
 - Record user-facing changes under `## [Unreleased]` in `CHANGELOG.md` (Keep a Changelog style; prefix breaking changes with `**Breaking:**`).
 
 ## Layout
