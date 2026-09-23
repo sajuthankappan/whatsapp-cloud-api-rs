@@ -25,7 +25,7 @@ impl WhatsappClient {
         }
     }
 
-    pub fn version(&mut self) -> &str {
+    pub fn version(&self) -> &str {
         &self.version
     }
 
@@ -206,5 +206,12 @@ mod tests {
         client.set_phone_number_id("new-id");
         assert_eq!(client.phone_number_id, "new-id");
         assert_eq!(client.access_token, "token");
+    }
+
+    #[test]
+    fn version_is_readable_through_shared_reference() {
+        let client = WhatsappClient::new("token", "id");
+        let client_ref = &client;
+        assert_eq!(client_ref.version(), "v26.0");
     }
 }

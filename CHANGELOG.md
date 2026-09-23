@@ -4,6 +4,7 @@
 
 ### Changed
 
+- `WhatsappClient::version()` now takes `&self` instead of `&mut self`
 - **Breaking:** Graph API error responses are now returned as `WhatsappError::ApiError(Box<ApiError>)` (with `status`, `code`, `error_subcode`, `error_data.details`, `fbtrace_id`, ...) instead of `UnexpectedError(String)`; `UnexpectedError` remains for non-Graph error bodies
 - **Breaking:** `WhatsappError` is now `#[non_exhaustive]`
 - reuse a single HTTP client (and its connection pool) per `WhatsappClient` instead of creating one per request
