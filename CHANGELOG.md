@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-23
+
+First release under the new crate name `whatsapp` (previously `whatsapp-cloud-api`).
+
 ### Changed
 
 - upgrade default graph api version from v20.0 (expires 2026-09-24) to v26.0
