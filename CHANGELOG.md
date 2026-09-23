@@ -5,6 +5,9 @@
 ### Added
 
 - `LICENSE-MIT` and `LICENSE-APACHE` files
+- webhooks: status `Error` now has `message`, `error_data.details` and `href`
+- webhooks: `Conversation.expiration_timestamp`; `Pricing.billable`, `category` and `pricing_type`
+- webhooks: shared contact cards now include `addresses`, `birthday`, `emails`, `org` and `urls`
 
 ### Changed
 

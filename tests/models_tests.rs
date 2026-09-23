@@ -397,6 +397,16 @@ fn webhook_sent_status_deserializes() {
         "service"
     );
     assert_eq!(status.pricing.as_ref().unwrap().pricing_model, "PMP");
+
+    let conversation = status.conversation.as_ref().unwrap();
+    assert_eq!(
+        conversation.expiration_timestamp.as_deref(),
+        Some("1750350180")
+    );
+    let pricing = status.pricing.as_ref().unwrap();
+    assert_eq!(pricing.billable, Some(true));
+    assert_eq!(pricing.category.as_deref(), Some("service"));
+    assert_eq!(pricing.pricing_type.as_deref(), Some("regular"));
 }
 
 #[test]
@@ -415,7 +425,8 @@ fn webhook_failed_status_deserializes() {
                 "message": "Re-engagement message",
                 "error_data": {
                     "details": "Message failed to send because more than 24 hours have passed since the customer last replied to this number."
-                }
+                },
+                "href": "https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes/"
             }]
         }]
     }));
@@ -428,6 +439,15 @@ fn webhook_failed_status_deserializes() {
     let error = &status.errors.as_ref().unwrap()[0];
     assert_eq!(error.code, 131047);
     assert_eq!(error.title, "Re-engagement message");
+    assert_eq!(error.message.as_deref(), Some("Re-engagement message"));
+    assert_eq!(
+        error.error_data.as_ref().unwrap().details,
+        "Message failed to send because more than 24 hours have passed since the customer last replied to this number."
+    );
+    assert_eq!(
+        error.href.as_deref(),
+        Some("https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes/")
+    );
 }
 
 #[test]
@@ -473,7 +493,20 @@ fn webhook_shared_contacts_deserializes() {
         "type": "contacts",
         "contacts": [{
             "name": { "formatted_name": "Barbara Johnson", "first_name": "Barbara", "last_name": "Johnson" },
-            "phones": [{ "phone": "+1 (940) 555-1234", "wa_id": "19405551234", "type": "CELL" }]
+            "phones": [{ "phone": "+1 (940) 555-1234", "wa_id": "19405551234", "type": "CELL" }],
+            "addresses": [{
+                "street": "1 Lucky Shrub Way",
+                "city": "Menlo Park",
+                "state": "CA",
+                "zip": "94025",
+                "country": "United States",
+                "country_code": "US",
+                "type": "WORK"
+            }],
+            "birthday": "1999-01-23",
+            "emails": [{ "email": "bjohnson@luckyshrub.example", "type": "WORK" }],
+            "org": { "company": "Lucky Shrub", "department": "Sales", "title": "Manager" },
+            "urls": [{ "url": "https://www.luckyshrub.example", "type": "WORK" }]
         }]
     }));
 
@@ -489,6 +522,20 @@ fn webhook_shared_contacts_deserializes() {
     assert_eq!(phone.phone.as_deref(), Some("+1 (940) 555-1234"));
     assert_eq!(phone.wa_id.as_deref(), Some("19405551234"));
     assert_eq!(phone.phone_type.as_deref(), Some("CELL"));
+
+    let address = &contact.addresses.as_ref().unwrap()[0];
+    assert_eq!(address.city.as_deref(), Some("Menlo Park"));
+    assert_eq!(address.country_code.as_deref(), Some("US"));
+    assert_eq!(address.address_type.as_deref(), Some("WORK"));
+    assert_eq!(contact.birthday.as_deref(), Some("1999-01-23"));
+    let email = &contact.emails.as_ref().unwrap()[0];
+    assert_eq!(email.email.as_deref(), Some("bjohnson@luckyshrub.example"));
+    assert_eq!(email.email_type.as_deref(), Some("WORK"));
+    let org = contact.org.as_ref().unwrap();
+    assert_eq!(org.company.as_deref(), Some("Lucky Shrub"));
+    assert_eq!(org.title.as_deref(), Some("Manager"));
+    let url = &contact.urls.as_ref().unwrap()[0];
+    assert_eq!(url.url.as_deref(), Some("https://www.luckyshrub.example"));
 }
 
 #[test]
@@ -565,4 +612,30 @@ fn webhook_system_user_changed_number_deserializes() {
     assert_eq!(system.system_type.as_deref(), Some("user_changed_number"));
     assert_eq!(system.new_wa_id.as_deref(), Some("16505559999"));
     assert_eq!(system.identity, None);
+}
+
+#[test]
+fn webhook_status_without_optional_fields_deserializes() {
+    let payload = webhook(json!({
+        "messaging_product": "whatsapp",
+        "metadata": { "display_phone_number": "15550783881", "phone_number_id": "106540352242922" },
+        "statuses": [{
+            "id": "wamid.min",
+            "status": "delivered",
+            "timestamp": "1750263773",
+            "recipient_id": "16505551234",
+            "conversation": { "id": "c1", "origin": { "type": "utility" } },
+            "pricing": { "pricing_model": "CBP" },
+            "errors": [{ "code": 131000, "title": "Something went wrong" }]
+        }]
+    }));
+
+    let status = &payload.entry[0].changes[0].value.statuses.as_ref().unwrap()[0];
+    assert_eq!(
+        status.conversation.as_ref().unwrap().expiration_timestamp,
+        None
+    );
+    assert_eq!(status.pricing.as_ref().unwrap().billable, None);
+    let error = &status.errors.as_ref().unwrap()[0];
+    assert!(error.message.is_none() && error.error_data.is_none() && error.href.is_none());
 }

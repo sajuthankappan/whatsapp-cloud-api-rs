@@ -101,7 +101,15 @@ pub struct ReferredProduct {
 pub struct Error {
     pub code: i32,
     pub title: String,
-    // TODO: Add more fields from v16.0 and newer
+    pub message: Option<String>,
+    pub error_data: Option<ErrorData>,
+    /// Link to Meta's error codes reference
+    pub href: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ErrorData {
+    pub details: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -202,7 +210,12 @@ pub struct Reaction {
 pub struct SharedContact {
     pub name: SharedContactName,
     pub phones: Option<Vec<SharedContactPhone>>,
-    // TODO: addresses, emails, org, urls, birthday
+    pub addresses: Option<Vec<SharedContactAddress>>,
+    /// `YYYY-MM-DD`
+    pub birthday: Option<String>,
+    pub emails: Option<Vec<SharedContactEmail>>,
+    pub org: Option<SharedContactOrg>,
+    pub urls: Option<Vec<SharedContactUrl>>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -221,6 +234,39 @@ pub struct SharedContactPhone {
     pub wa_id: Option<String>,
     #[serde(rename = "type")]
     pub phone_type: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContactAddress {
+    pub street: Option<String>,
+    pub city: Option<String>,
+    pub state: Option<String>,
+    pub zip: Option<String>,
+    pub country: Option<String>,
+    pub country_code: Option<String>,
+    #[serde(rename = "type")]
+    pub address_type: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContactEmail {
+    pub email: Option<String>,
+    #[serde(rename = "type")]
+    pub email_type: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContactOrg {
+    pub company: Option<String>,
+    pub department: Option<String>,
+    pub title: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContactUrl {
+    pub url: Option<String>,
+    #[serde(rename = "type")]
+    pub url_type: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -280,7 +326,8 @@ pub struct Status {
 pub struct Conversation {
     pub id: String,
     pub origin: Origin,
-    // TODO: Other fields
+    /// Only present in `sent` status notifications
+    pub expiration_timestamp: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -292,5 +339,8 @@ pub struct Origin {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Pricing {
     pub pricing_model: String,
-    // TODO: Other fields
+    pub billable: Option<bool>,
+    pub category: Option<String>,
+    #[serde(rename = "type")]
+    pub pricing_type: Option<String>,
 }
