@@ -4,6 +4,7 @@
 
 ### Changed
 
+- **Breaking:** upgrade reqwest from 0.11 to 0.13 (`WhatsappError::ReqwestError` now wraps a `reqwest` 0.13 error)
 - upgrade to Rust edition 2024 (minimum supported Rust version is now 1.85)
 - Fix: `set_phone_number_id` was overwriting the access token instead of the phone number id
 
