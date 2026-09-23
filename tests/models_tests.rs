@@ -429,3 +429,140 @@ fn webhook_failed_status_deserializes() {
     assert_eq!(error.code, 131047);
     assert_eq!(error.title, "Re-engagement message");
 }
+
+#[test]
+fn webhook_reaction_deserializes() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.reaction",
+        "timestamp": "1749416383",
+        "type": "reaction",
+        "reaction": { "message_id": "wamid.original", "emoji": "\u{1F44D}" }
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    assert!(matches!(
+        message.message_type,
+        NotificationMessageType::Reaction
+    ));
+    let reaction = message.reaction.as_ref().unwrap();
+    assert_eq!(reaction.message_id, "wamid.original");
+    assert_eq!(reaction.emoji.as_deref(), Some("\u{1F44D}"));
+}
+
+#[test]
+fn webhook_removed_reaction_deserializes() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.reaction",
+        "timestamp": "1749416383",
+        "type": "reaction",
+        "reaction": { "message_id": "wamid.original" }
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    assert_eq!(message.reaction.as_ref().unwrap().emoji, None);
+}
+
+#[test]
+fn webhook_shared_contacts_deserializes() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.contacts",
+        "timestamp": "1749416383",
+        "type": "contacts",
+        "contacts": [{
+            "name": { "formatted_name": "Barbara Johnson", "first_name": "Barbara", "last_name": "Johnson" },
+            "phones": [{ "phone": "+1 (940) 555-1234", "wa_id": "19405551234", "type": "CELL" }]
+        }]
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    assert!(matches!(
+        message.message_type,
+        NotificationMessageType::Contacts
+    ));
+    let contact = &message.contacts.as_ref().unwrap()[0];
+    assert_eq!(contact.name.formatted_name, "Barbara Johnson");
+    assert_eq!(contact.name.first_name.as_deref(), Some("Barbara"));
+    let phone = &contact.phones.as_ref().unwrap()[0];
+    assert_eq!(phone.phone.as_deref(), Some("+1 (940) 555-1234"));
+    assert_eq!(phone.wa_id.as_deref(), Some("19405551234"));
+    assert_eq!(phone.phone_type.as_deref(), Some("CELL"));
+}
+
+#[test]
+fn webhook_request_welcome_deserializes() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.welcome",
+        "timestamp": "1749416383",
+        "type": "request_welcome"
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    assert!(matches!(
+        message.message_type,
+        NotificationMessageType::RequestWelcome
+    ));
+}
+
+#[test]
+fn webhook_unmodelled_message_type_deserializes_as_unknown() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.future",
+        "timestamp": "1749416383",
+        "type": "some_future_type",
+        "some_future_type": { "anything": true }
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    assert!(matches!(
+        message.message_type,
+        NotificationMessageType::Unknown
+    ));
+}
+
+#[test]
+fn webhook_video_without_filename_deserializes() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.video",
+        "timestamp": "1749416383",
+        "type": "video",
+        "video": {
+            "caption": "Look",
+            "mime_type": "video/mp4",
+            "sha256": "Ygo0I7ONQEYDBVB2g1xMlx4sP2vYz3tBC0Gb3N3SNLk=",
+            "id": "1308624870840587"
+        }
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    let video = message.video.as_ref().unwrap();
+    assert_eq!(video.id, "1308624870840587");
+    assert_eq!(video.filename, None);
+    assert_eq!(video.caption.as_deref(), Some("Look"));
+}
+
+#[test]
+fn webhook_system_user_changed_number_deserializes() {
+    let payload = incoming(json!({
+        "from": "16505551234",
+        "id": "wamid.system",
+        "timestamp": "1749416383",
+        "type": "system",
+        "system": {
+            "body": "Sheena changed from 16505551234 to 16505559999",
+            "new_wa_id": "16505559999",
+            "type": "user_changed_number"
+        }
+    }));
+
+    let message = &payload.entry[0].changes[0].value.messages.as_ref().unwrap()[0];
+    let system = message.system.as_ref().unwrap();
+    assert_eq!(system.system_type.as_deref(), Some("user_changed_number"));
+    assert_eq!(system.new_wa_id.as_deref(), Some("16505559999"));
+    assert_eq!(system.identity, None);
+}

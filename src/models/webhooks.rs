@@ -69,11 +69,13 @@ pub struct NotificationMessage {
     pub message_type: NotificationMessageType,
     pub audio: Option<Audio>,
     pub button: Option<Button>,
+    pub contacts: Option<Vec<SharedContact>>,
     pub document: Option<Document>,
     pub text: Option<Text>,
     pub image: Option<Image>,
     pub interactive: Option<Interactive>,
     pub order: Option<Order>,
+    pub reaction: Option<Reaction>,
     pub sticker: Option<Sticker>,
     pub system: Option<System>,
     pub video: Option<Video>,
@@ -104,20 +106,26 @@ pub struct Error {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
+#[non_exhaustive]
 pub enum NotificationMessageType {
     Audio,
     Button,
+    Contacts,
     Document,
     Text,
     Image,
     Interactive,
     Order,
+    Reaction,
+    RequestWelcome,
     Sticker,
     System,
-    Unknown,
     Video,
     Unsupported,
     Location,
+    /// Also used for any message type not (yet) modelled by this crate
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -183,6 +191,39 @@ pub struct ProductItem {
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Reaction {
+    pub message_id: String,
+    /// Absent when the user removed their reaction
+    pub emoji: Option<String>,
+}
+
+/// Contact card shared by the user (message type `contacts`)
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContact {
+    pub name: SharedContactName,
+    pub phones: Option<Vec<SharedContactPhone>>,
+    // TODO: addresses, emails, org, urls, birthday
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContactName {
+    pub formatted_name: String,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub middle_name: Option<String>,
+    pub prefix: Option<String>,
+    pub suffix: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SharedContactPhone {
+    pub phone: Option<String>,
+    pub wa_id: Option<String>,
+    #[serde(rename = "type")]
+    pub phone_type: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Sticker {
     pub mime_type: String,
     pub sha256: String,
@@ -193,11 +234,12 @@ pub struct Sticker {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct System {
     pub body: String,
-    pub identity: String,
+    pub identity: Option<String>,
     pub new_wa_id: Option<String>,
     pub wa_id: Option<String>,
-    pub system_type: String,
-    pub customer: String,
+    #[serde(rename = "type")]
+    pub system_type: Option<String>,
+    pub customer: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -208,7 +250,7 @@ pub struct Text {
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Video {
     pub caption: Option<String>,
-    pub filename: String,
+    pub filename: Option<String>,
     pub sha256: String,
     pub id: String,
     pub mime_type: String,
