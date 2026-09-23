@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.5.5] - 2026-09-23
+
+Final release of `whatsapp-cloud-api`. This crate has moved to [`whatsapp`](https://crates.io/crates/whatsapp).
+
+### Changed
+
+- Deprecated: `WhatsappClient` is marked `#[deprecated]` in favour of the `whatsapp` crate
+- upgrade default graph api version from v20.0 (expires 2026-09-24) to v26.0
+- Fix: `set_phone_number_id` was overwriting the access token instead of the phone number id
+
 ## [0.5.4] - 2025-05-21
 
 ### Changed

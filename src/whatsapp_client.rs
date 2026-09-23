@@ -8,6 +8,7 @@ use crate::{
 
 const FACEBOOK_GRAPH_API_BASE_URL: &str = "https://graph.facebook.com";
 
+#[deprecated(note = "whatsapp-cloud-api has moved to the `whatsapp` crate: https://crates.io/crates/whatsapp")]
 pub struct WhatsappClient {
     version: String,
     access_token: String,
@@ -17,7 +18,7 @@ pub struct WhatsappClient {
 impl WhatsappClient {
     pub fn new(access_token: &str, phone_number_id: &str) -> Self {
         Self {
-            version: "v20.0".into(),
+            version: "v26.0".into(),
             access_token: access_token.into(),
             phone_number_id: phone_number_id.into(),
         }
@@ -36,7 +37,7 @@ impl WhatsappClient {
     }
 
     pub fn set_phone_number_id(&mut self, phone_number_id: &str) {
-        self.access_token = phone_number_id.into();
+        self.phone_number_id = phone_number_id.into();
     }
 
     pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {

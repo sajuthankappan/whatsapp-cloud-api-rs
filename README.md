@@ -6,6 +6,11 @@
 
 **Whatsapp Cloud API Rust Client**
 
+> [!WARNING]
+> **This crate has moved to [`whatsapp`](https://crates.io/crates/whatsapp).** `whatsapp-cloud-api` will not receive further updates.
+>
+> To migrate, replace `whatsapp-cloud-api = "0.5"` with `whatsapp = "0.6"` in `Cargo.toml`, and `whatsapp_cloud_api::` with `whatsapp::` in code.
+
 ## Features
 
 - Sending messages using Whatsapp Cloud API
@@ -13,7 +18,7 @@
 - Models to help processing incoming webhooks
 
 ## Supported Graph API Version
-This crate is designed & tested for facebook graph api version v20.0. You may change the version using the set_verion() method. But, do it at your own risk :)
+This crate uses Facebook Graph API version v26.0 by default (v20.0 expires on 2026-09-24). You may change the version using the `set_version()` method. But, do it at your own risk :)
 
 ## Usage example
 

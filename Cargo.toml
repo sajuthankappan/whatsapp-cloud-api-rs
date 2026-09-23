@@ -1,9 +1,9 @@
 [package]
 name = "whatsapp-cloud-api"
-version = "0.5.4"
+version = "0.5.5"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "Whatsapp Cloud API Rust Client"
+description = "Deprecated: this crate has moved to `whatsapp` (https://crates.io/crates/whatsapp)"
 homepage = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
 repository = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
 readme = "README.md"
