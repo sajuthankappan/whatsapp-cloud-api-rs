@@ -99,7 +99,7 @@ For more details, please see the [tests] folder
 
 ## Maintainer
 
-Maintained by [Saju Thankappan](https://github.com/sajuthankappan), creator of [Smito One](https://smito.in).
+Maintained by [Saju Thankappan](https://github.com/sajuthankappan), creator of [Smito One](https://smito.in), which uses this crate for its WhatsApp integration.
 
 ## License
 
