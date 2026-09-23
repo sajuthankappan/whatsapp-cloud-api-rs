@@ -67,6 +67,31 @@ let client = WhatsappClient::new(&access_token, &phone_number_id);
 client.send_message(&message).await?;
 ```
 
+## Error handling
+
+Errors returned by the Graph API are available as `WhatsappError::ApiError`, with Meta's error `code`, `error_subcode`, `error_data.details`, `fbtrace_id` and the HTTP `status`. See Meta's [error codes] reference.
+
+```rust
+use whatsapp::WhatsappError;
+
+match client.send_message(&message).await {
+    Ok(response) => println!("accepted {}", response.messages[0].id),
+    // Access token expired or invalid
+    Err(WhatsappError::ApiError(e)) if e.code == 190 => {
+        eprintln!("refresh the access token: {e}");
+    }
+    // Any other error returned by the Graph API (bad parameters, rate limit, ...)
+    Err(WhatsappError::ApiError(e)) => {
+        eprintln!("HTTP {}: {e} (fbtrace_id: {:?})", e.status, e.fbtrace_id);
+    }
+    // Network / TLS errors, or an error response that is not from the Graph API
+    Err(e) => eprintln!("request failed: {e}"),
+}
+```
+
+`Ok` means the message was accepted, not delivered. Delivery failures (for example `131047` when more than 24 hours have passed since the user's last message) are reported later in a `failed` status webhook, available as `webhooks::Status::errors`.
+
+[error codes]: https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes
 
 For more details, please see the [tests] folder
 
