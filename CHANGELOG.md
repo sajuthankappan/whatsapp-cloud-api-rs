@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-23
+
 ### Added
 
 - `LICENSE-MIT` and `LICENSE-APACHE` files
@@ -14,6 +16,7 @@
 
 ### Changed
 
+- **Breaking:** webhooks: `Error`, `Conversation`, `Pricing` and `SharedContact` have new public fields; code that builds these structs with struct literals (e.g. in tests) must set them. Deserializing webhooks is unaffected
 - GitHub repository renamed from `whatsapp-cloud-api-rs` to `whatsapp-rs`
 - interactive messages no longer send `null` for unused action fields (e.g. `"catalog_id": null` in button messages)
 
