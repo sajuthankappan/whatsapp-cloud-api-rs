@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- reuse a single HTTP client (and its connection pool) per `WhatsappClient` instead of creating one per request
+
 ## [0.6.0] - 2026-09-23
 
 First release under the new crate name `whatsapp` (previously `whatsapp-cloud-api`).

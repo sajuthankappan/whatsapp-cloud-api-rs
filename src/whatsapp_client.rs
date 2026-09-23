@@ -12,6 +12,7 @@ pub struct WhatsappClient {
     version: String,
     access_token: String,
     phone_number_id: String,
+    client: reqwest::Client,
 }
 
 impl WhatsappClient {
@@ -20,6 +21,7 @@ impl WhatsappClient {
             version: "v26.0".into(),
             access_token: access_token.into(),
             phone_number_id: phone_number_id.into(),
+            client: reqwest::Client::new(),
         }
     }
 
@@ -40,7 +42,13 @@ impl WhatsappClient {
     }
 
     pub async fn send_message(&self, message: &Message) -> Result<MessageResponse, WhatsappError> {
-        http_client::post(&self.messages_api_url(), &self.access_token, message).await
+        http_client::post(
+            &self.client,
+            &self.messages_api_url(),
+            &self.access_token,
+            message,
+        )
+        .await
     }
 
     pub async fn request_code(
@@ -52,12 +60,24 @@ impl WhatsappClient {
             code_method,
             language: language.into(),
         };
-        http_client::post(&self.request_code_api_url(), &self.access_token, &params).await
+        http_client::post(
+            &self.client,
+            &self.request_code_api_url(),
+            &self.access_token,
+            &params,
+        )
+        .await
     }
 
     pub async fn verify_code(&self, code: &str) -> Result<PhoneNumberResponse, WhatsappError> {
         let params = CodeVerifyParams { code: code.into() };
-        http_client::post(&self.verify_code_api_url(), &self.access_token, &params).await
+        http_client::post(
+            &self.client,
+            &self.verify_code_api_url(),
+            &self.access_token,
+            &params,
+        )
+        .await
     }
 
     pub async fn mark_message_as_read(
@@ -66,6 +86,7 @@ impl WhatsappClient {
     ) -> Result<MessageStatusResponse, WhatsappError> {
         let message_status = MessageStatus::for_read(message_id);
         http_client::post(
+            &self.client,
             &self.messages_api_url(),
             &self.access_token,
             &message_status,
@@ -74,7 +95,12 @@ impl WhatsappClient {
     }
 
     pub async fn get_media(&self, media_id: &str) -> Result<MediaResponse, WhatsappError> {
-        http_client::get(&self.media_api_url(media_id), &self.access_token).await
+        http_client::get(
+            &self.client,
+            &self.media_api_url(media_id),
+            &self.access_token,
+        )
+        .await
     }
 
     fn facebook_api_version_url(&self) -> String {
@@ -116,11 +142,14 @@ mod http_client {
 
     use crate::WhatsappError;
 
-    pub async fn get<U>(url: &str, bearer_token: &str) -> Result<U, WhatsappError>
+    pub async fn get<U>(
+        client: &reqwest::Client,
+        url: &str,
+        bearer_token: &str,
+    ) -> Result<U, WhatsappError>
     where
         U: DeserializeOwned,
     {
-        let client = reqwest::Client::new();
         let resp = client.get(url).bearer_auth(bearer_token).send().await?;
 
         match resp.status() {
@@ -137,12 +166,16 @@ mod http_client {
         }
     }
 
-    pub async fn post<T, U>(url: &str, bearer_token: &str, data: &T) -> Result<U, WhatsappError>
+    pub async fn post<T, U>(
+        client: &reqwest::Client,
+        url: &str,
+        bearer_token: &str,
+        data: &T,
+    ) -> Result<U, WhatsappError>
     where
         T: Serialize + ?Sized,
         U: DeserializeOwned,
     {
-        let client = reqwest::Client::new();
         let resp = client
             .post(url)
             .bearer_auth(bearer_token)
