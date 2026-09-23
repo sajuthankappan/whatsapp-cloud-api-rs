@@ -2,20 +2,23 @@
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-09-23
+
 ### Changed
 
-- minimum supported Rust version raised from 1.85 to 1.87 (required by current transitive dependencies of reqwest)
-- **Breaking:** webhooks: `Video.filename` is now optional (Meta does not send it for videos, which made the whole payload fail to parse)
-- **Breaking:** webhooks: `System` now maps `type` to `system_type`, and `system_type`, `identity`, `customer` are optional (user_changed_number payloads failed to parse)
-- **Breaking:** webhooks: `NotificationMessageType` is now `#[non_exhaustive]`, and unrecognised message types deserialize as `Unknown` instead of failing the whole payload
-- `WhatsappClient::version()` now takes `&self` instead of `&mut self`
 - **Breaking:** Graph API error responses are now returned as `WhatsappError::ApiError(Box<ApiError>)` (with `status`, `code`, `error_subcode`, `error_data.details`, `fbtrace_id`, ...) instead of `UnexpectedError(String)`; `UnexpectedError` remains for non-Graph error bodies
 - **Breaking:** `WhatsappError` is now `#[non_exhaustive]`
+- **Breaking:** webhooks: `NotificationMessageType` is now `#[non_exhaustive]`, and unrecognised message types deserialize as `Unknown` instead of failing the whole payload
+- **Breaking:** webhooks: `Video.filename` is now optional (Meta does not send it for videos, which made the whole payload fail to parse)
+- **Breaking:** webhooks: `System` now maps `type` to `system_type`, and `system_type`, `identity`, `customer` are optional (user_changed_number payloads failed to parse)
+- minimum supported Rust version raised from 1.85 to 1.87 (required by current transitive dependencies of reqwest)
 - reuse a single HTTP client (and its connection pool) per `WhatsappClient` instead of creating one per request
+- `WhatsappClient::version()` now takes `&self` instead of `&mut self`
 
 ### Added
 
 - webhooks: `reaction`, `contacts` (shared contact cards) and `request_welcome` message types
+- README: error handling example
 - GitHub Actions CI: fmt, clippy (native-tls and rustls), offline tests, MSRV check
 
 ## [0.6.0] - 2026-09-23

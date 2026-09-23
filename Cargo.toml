@@ -1,6 +1,6 @@
 [package]
 name = "whatsapp"
-version = "0.6.0"
+version = "0.7.0"
 edition = "2024"
 rust-version = "1.87"
 license = "MIT OR Apache-2.0"
@@ -10,6 +10,7 @@ repository = "https://github.com/sajuthankappan/whatsapp-cloud-api-rs"
 readme = "README.md"
 keywords = ["whatsapp", "cloud-api", "business"]
 categories = ["api-bindings"]
+exclude = [".github/", "CLAUDE.md", "NOTES.md"]
 
 [dependencies]
 log = "0.4.20"
